@@ -1,2 +1,7 @@
 # pydoodle
-Py version of "Doodle Jump" game
+pydoodle - desktop-игра, по мотивам известной мобильной игры doodle jump.
+
+# Стек технологий
+* Python - основной ЯП.
+* Pygame - библиотека для создания игры
+* Git - система контроля версий
