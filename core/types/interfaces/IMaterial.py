@@ -1,13 +1,14 @@
 import abc
 
+# FIXME: -> AbstractClass?
+
 
 class IMaterial(abc.ABC):
-    def __init__(self, x, y, width, height, surface):
+    def __init__(self, x, y, width, height):
         self.x = x
         self.y = y
         self.width = width
         self.height = height
-        self.surface = surface
 
     @property
     def rect_tuple(self):

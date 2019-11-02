@@ -1,7 +1,6 @@
 from core.consts import Direction
-from core.types.entity import Entity
-
-# from core.types.interfaces import Movable
+from core.types.entities import DynamicEntity, Screen
+# from core.mixins import SingletoneMixin
 
 MAX_JUMP_COUNT = 32
 _DEFAULT_SPEED = 8
@@ -11,7 +10,8 @@ _DEFAULT_SPEED = 8
 # TODO: Process state (instead of direct properties)
 # TODO: Jump,Move functional is Deprecated! Will be moved in the another module!
 
-class Player(Entity):
+# class Player(DynamicEntity, SingletoneMixin):
+class Player(DynamicEntity):
     DEFAULT_STATE = {
         "is_jump": False,
         "is_move": False,
@@ -19,8 +19,19 @@ class Player(Entity):
         "oriented_right": False,
     }
 
-    def __init__(self, x, y, width, height, surface, dx=None, dy=None):
-        Entity.__init__(self, x, y, width, height, surface, initial_state=self.DEFAULT_STATE)
+    DEFAULT_PROPS = {
+        "x": 50,
+        "y": 425,
+        "width": 60,
+        "height": 71,
+        "screen": Screen.get_global()
+    }
+
+    __GLOBAL_INSTANCE = None
+
+    def __init__(self, x, y, width, height, screen, dx=None, dy=None):
+        DynamicEntity.__init__(self, x, y, width, height, screen, initial_state=self.DEFAULT_STATE)
+        # SingletoneMixin.__init__(self, Player, self.DEFAULT_PROPS)
         # Movable.__init__(self, x, y, 8)
 
         self.is_jump = False
@@ -33,16 +44,22 @@ class Player(Entity):
 
         keys = props.get("keys")
         # >>> handle keys
-        if keys[pygame.K_SPACE] or keys[pygame.K_w]:
+
+        if keys[pygame.K_SPACE]:
             self.is_jump = True
 
         # TODO: Switch!
         # >>> Left
         from core.consts import Direction
-        if keys[pygame.K_a]:
+        # print(self._position_info)
+        if keys[pygame.K_a] and not self.left_border_passed:
             self.move(Direction.LEFT)
-        if keys[pygame.K_d]:
+        if keys[pygame.K_d] and not self.right_border_passed:
             self.move(Direction.RIGHT)
+        if keys[pygame.K_w] and not self.top_border_passed:
+            self.move(Direction.UP)
+        if keys[pygame.K_s] and not self.bottom_border_passed:
+            self.move(Direction.DOWN)
 
         # >>> update
         if self.is_jump:
@@ -52,7 +69,7 @@ class Player(Entity):
         import pygame
 
         from core.consts import Colors
-        pygame.draw.rect(self.surface, Colors.CYAN, self.rect)
+        pygame.draw.rect(self.screen.surface, Colors.CYAN, self.rect)
         # print(type(Colors.CYAN))
 
     # Deprecated! Will be moved in the other class
@@ -87,3 +104,17 @@ class Player(Entity):
             self.y -= self.dy
         if direction == Direction.DOWN:
             self.y += self.dy
+
+    @staticmethod
+    def get_global():
+        if Player.__GLOBAL_INSTANCE is None:
+            from core.types.entities import Screen
+            Player.__GLOBAL_INSTANCE = Player(
+                x=50,
+                y=425,
+                width=60,
+                height=71,
+                screen=Screen.get_global(),
+            )
+
+        return Player.__GLOBAL_INSTANCE

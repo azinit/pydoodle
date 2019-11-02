@@ -1,9 +1,14 @@
 import abc
 
 
+# TODO: Screen -> Scene
+
+
 class IRender(abc.ABC):
-    def __init__(self, surface):
-        self.surface = surface
+    from core.types.entities.screen import Screen
+
+    def __init__(self, screen: Screen):
+        self.screen = screen
 
     @abc.abstractmethod
     def render(self):

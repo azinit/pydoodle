@@ -1,4 +1,4 @@
-class Screen:
+class ScreenSize:
     """
     Query of common used screen sizes
     """
@@ -37,6 +37,8 @@ class Direction:
     """
     Direction kinds
     """
+
+    # TODO: UP/DOWN -> TOP/BOTTOM
     RIGHT = 0
     UP = 1
     LEFT = 2
