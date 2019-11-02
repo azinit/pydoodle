@@ -18,14 +18,15 @@ class GameSession(object):
 
     def __init__(self):
         """ Init components """
-        from core.scenes import CreditsScene
+        from core.scenes.scenes import credits_itis
 
         pygame.init()                           # >>> init lib
         self.clock = pygame.time.Clock()        # >>> init clock
         self.is_running = True                  # >>> init gameloop
-        self.SCREEN.switch_to(CreditsScene(     # >>> init first scene
-            caption="Credits | PyDoodle"
-        ))
+        self.SCREEN.switch_to(credits_itis)
+        # self.SCREEN.switch_to(CreditsScene(     # >>> init first scene
+        #     caption="Credits | PyDoodle"
+        # ))
 
     def run(self):
         """ Start gameloop """

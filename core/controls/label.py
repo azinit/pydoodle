@@ -2,10 +2,12 @@ from core.controls import Control
 
 
 class Label(Control):
-    from pygame import font
+    import pygame
+    pygame.init()
+
     from core.consts import Colors
 
-    DEFAULT_FONT = font.SysFont("Calibri", 56)
+    DEFAULT_FONT = pygame.font.SysFont("Calibri", 56)
     DEFAULT_COLOR = Colors.BLACK
 
     def __init__(self, x, y, screen, text, **props):
