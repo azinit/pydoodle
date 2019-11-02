@@ -1,12 +1,21 @@
-# TODO: Singletone
+from core.mixins import SingletonMixin
 
+
+#
 
 # TODO: Is object on stage (not out of border)
 # FIXME: class Screen(Surface):
 
-class Screen(object):
+class Screen(SingletonMixin):
+    from core.consts import ScreenSize
+
     DEFAULT_CAPTION = "[dev] PyDoodle"
-    __GLOBAL_INSTANCE = None
+
+    DEFAULT_SIZES = ScreenSize.WXGA
+    DEFAULT_PROPS = {
+        "width": DEFAULT_SIZES[0],
+        "height": DEFAULT_SIZES[1],
+    }
 
     def __init__(self, width, height):
         import pygame
@@ -40,14 +49,8 @@ class Screen(object):
     def switch_to(self, scene):
         self.scene = scene
 
-    @staticmethod
-    def get_global():
-        if Screen.__GLOBAL_INSTANCE is None:
-            from core.consts import ScreenSize
-            Screen.__GLOBAL_INSTANCE = Screen(*ScreenSize.WXGA)
-
-        return Screen.__GLOBAL_INSTANCE
-
+    def half_sizes(self):
+        return tuple((self.width // 2, self.height // 2))
     # def render(self):
     #     self.scene.render()
     #

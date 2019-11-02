@@ -8,6 +8,8 @@ TODO LIST
     Scenes as Singletones?
     Keys from pygame (global consts)
     Console.log -> depend on abstract class log() with thread setup
+    Center positioning ( not 0,0 -
+                              |  x, y
 """
 
 
