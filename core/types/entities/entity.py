@@ -1,4 +1,9 @@
-from core.types.interfaces import *
+from core.types.interfaces import (
+    IMaterial,
+    IRender,
+    IUpdate,
+    IStateDependent
+)
 
 # TODO: Or pygame.sprite???
 # TODO: Interfaces for other...

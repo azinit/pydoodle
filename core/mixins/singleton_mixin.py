@@ -1,12 +1,14 @@
 class SingletonMixin(object):
+    DEFAULT_PROPS = {}
     __GLOBAL_INSTANCE = None
 
-    def __init__(self, singleton_class, singleton_props):
-        self.__class = singleton_class
-        self.props = singleton_props
+    # def __init__(self, **kwargs):
+    #     pass
 
-    @staticmethod
-    def get_global():
-        if self.__GLOBAL_INSTANCE is None:
-            self.__GLOBAL_INSTANCE = self.__class(**self.props)
-        return self.__GLOBAL_INSTANCE
+    @classmethod
+    def get_global(cls):
+        # >>> if not exist -> create new global instance
+        if cls.__GLOBAL_INSTANCE is None:
+            cls.__GLOBAL_INSTANCE = cls(**cls.DEFAULT_PROPS)
+
+        return cls.__GLOBAL_INSTANCE

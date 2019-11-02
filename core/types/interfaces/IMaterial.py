@@ -1,9 +1,7 @@
-import abc
-
 # FIXME: -> AbstractClass?
 
 
-class IMaterial(abc.ABC):
+class IMaterial:
     def __init__(self, x, y, width, height):
         self.x = x
         self.y = y

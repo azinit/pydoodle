@@ -5,7 +5,7 @@ from core.types.interfaces import (
 )
 
 
-# TODO: Caption "captin | PyDoodl "
+# FIXME: Caption "captin | PyDoodl "
 
 class Scene(IRender, IUpdate, IHandleEvents):
     THREAD = "SCENE"
@@ -15,7 +15,7 @@ class Scene(IRender, IUpdate, IHandleEvents):
         super().__init__(Screen.get_global())
         self.caption = caption or self.screen.caption
         self.screen.set_caption(self.caption)
-        self.__controls = []
+        self._controls = []
 
     def render(self):
         raise NotImplementedError
@@ -26,5 +26,9 @@ class Scene(IRender, IUpdate, IHandleEvents):
     def handle_events(self, events):
         raise NotImplementedError
 
-    def __render(self):
+    def _render(self):
         raise NotImplementedError
+
+    def _render__controls(self):
+        for _control in self._controls:
+            _control.render()

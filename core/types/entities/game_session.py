@@ -16,16 +16,14 @@ class GameSession(object):
     FPS_LIMIT = 60
     SCREEN = Screen.get_global()
 
-    # PLAYER =
-
     def __init__(self):
         """ Init components """
         from core.scenes import CreditsScene
 
-        pygame.init()  # >>> init lib
-        self.clock = pygame.time.Clock()  # >>> init clock
-        self.is_running = True  # >>> init gameloop
-        self.SCREEN.switch_to(CreditsScene(
+        pygame.init()                           # >>> init lib
+        self.clock = pygame.time.Clock()        # >>> init clock
+        self.is_running = True                  # >>> init gameloop
+        self.SCREEN.switch_to(CreditsScene(     # >>> init first scene
             caption="Credits | PyDoodle"
         ))
 

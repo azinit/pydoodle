@@ -6,7 +6,7 @@ class DynamicEntity(Entity, ScreenPosMixin):
     def __init__(self, x, y, width, height, screen, initial_state=None):
         # Entity
         Entity.__init__(self, x, y, width, height, screen, initial_state=initial_state)
-        ScreenPosMixin.__init__(self, x, y, width, height)
+        ScreenPosMixin.__init__(self, x, y, width, height, screen)
         # print(">>>", self.BORDER_INACCURACY)
         # print(">>>", self.bottom_border_passed)
         # print(">>>", self._position_info)

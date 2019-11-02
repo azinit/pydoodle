@@ -1,17 +1,15 @@
-from core.types.entities import Entity
-from core.types.interfaces import (
-    IMaterial,
-    IRender,
-)
+# TODO: IMaterial implements
+from core.types.interfaces import IMaterial
 
 
-class ScreenPosMixin(IMaterial, IRender):
+class ScreenPosMixin(IMaterial):
     # FIXME: !!!
     BORDER_INACCURACY = 16
 
-    def __init__(self, x, y, width, height):
+    def __init__(self, x, y, width, height, screen):
+        IMaterial.__init__(self, x, y, width, height)
+        self.screen = screen
         # for @property#position_info
-        super().__init__(x, y, width, height)
         self._position_info = None
 
     @property
