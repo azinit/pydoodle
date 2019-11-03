@@ -69,5 +69,5 @@ class Player(DynamicEntity, MoveMixin, JumpMixin, SingletonMixin):
         import pygame
 
         from core.consts import Colors
-        pygame.draw.rect(self.screen.surface, Colors.CYAN, self.rect)
+        pygame.draw.rect(self.screen.surface, Colors.WHITE, self.rect)
         # print(type(Colors.CYAN))
