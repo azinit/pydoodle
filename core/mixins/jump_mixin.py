@@ -3,7 +3,7 @@ from core.types.interfaces import IMaterial
 
 class JumpMixin(IMaterial):
     """
-    Мискин для возможности прыжка сущности
+    Миксин для возможности прыжка сущности
     @example
     <pre>
         class SomeClass(JumpMixin):

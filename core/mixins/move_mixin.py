@@ -4,7 +4,7 @@ from core.types.interfaces import IMaterial
 
 class MoveMixin(IMaterial):
     """
-    Мискин для возможности перемещения сущности
+    Миксин для возможности перемещения сущности
     @remark
     Позволяет двигать сущность с помощью метода move(*directions),
     Где в directions мы указываем направления из consts.Direction

@@ -4,7 +4,7 @@ from core.types.interfaces import IMaterial
 
 class ScreenPosMixin(IMaterial):
     """
-    Мискин для получения информации об материальном объекте относительно экрана
+    Миксин для получения информации об материальном объекте относительно экрана
     @example
     <pre>
         class SomeClass(ScreenPosMixin):
