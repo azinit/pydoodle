@@ -8,6 +8,15 @@ from core.types.interfaces import (
 # FIXME: Caption "captin | PyDoodl "
 
 class Scene(IRender, IUpdate, IHandleEvents):
+    """
+    Класс - Сцена
+    Реализует базовое поведение и свойства сцены игры
+    @class Scene
+    @implements IRender
+    @implements IUpdate
+    @implements IHandleEvents
+    @see Screen
+    """
     THREAD = "SCENE"
 
     def __init__(self, caption=None, next_scene=None):
@@ -38,8 +47,10 @@ class Scene(IRender, IUpdate, IHandleEvents):
                     self.screen.switch_to(self.next_scene)
 
     def _render(self):
+        """ Как правило, служит для пре-отрисовки перед отрисовкой контролов и моделей """
         raise NotImplementedError
 
     def _render__controls(self):
+        """ Отображение всех контролов на сцене """
         for _control in self._controls:
             _control.render()

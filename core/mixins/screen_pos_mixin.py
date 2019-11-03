@@ -3,6 +3,24 @@ from core.types.interfaces import IMaterial
 
 
 class ScreenPosMixin(IMaterial):
+    """
+    Мискин для получения информации об материальном объекте относительно экрана
+    @example
+    <pre>
+        class SomeClass(ScreenPosMixin):
+            ...
+
+        # получение информации об объекте
+        some_entity = SomeClass(...)
+        ...
+        # Перемещаем сущность налево, если она еще не доходила до левой границы
+        if key[K_LEFT} and not some_entity.left_border_passed:
+            move(Direction.LEFT)
+        ...
+    </pre>
+    @mixin ScreenPosMixin
+    @implements IMaterial
+    """
     # FIXME: !!!
     BORDER_INACCURACY = 16
 

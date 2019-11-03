@@ -1,4 +1,6 @@
 """
+Основной файл игры.
+С него запускается игровая сессия
 
 TODO LIST
     Dependencies (Screen, Scene, IRender, ...)

@@ -9,8 +9,14 @@ from core.modules import *
 
 class GameSession(object):
     """
-    Game substance
+    Игровая сессия - объект инициализирует базовый gameloop с
+    - делегированием обработки событий
+    - обновлением моделей
+    - отрисовкой
+    Делегирует все эти процессы на текущую сцену (получает доступ через Screen - основной дисплей / поверхность отрисовки
+    Сцены, в свою очередь, делегируют эти процессы на модели, контролы
     """
+
     from core.types.entities import Screen
     THREAD = "GAME"
     FPS_LIMIT = 60
@@ -58,7 +64,6 @@ class GameSession(object):
 
     def __render(self):
         """ Draw and show surface """
-        # TODO: Implement through render_objects[]?
         # blit vs update: https://stackoverflow.com/questions/29314987/difference-between-pygame-display-update-and-pygame-display-flip
         self.SCREEN.scene.render()
         pygame.display.update()

@@ -2,6 +2,11 @@ from core.types.entities import Scene
 
 
 class CreditsScene(Scene):
+    """
+    Сцена с титрами
+    @class CreditsScene
+    @extends Scene
+    """
     THREAD = "CREDITS_SCENE"
 
     def __init__(self, label_text, caption=None, next_scene=None):
@@ -24,6 +29,7 @@ class CreditsScene(Scene):
         self._render__controls()
 
     def update(self, **props):
+        # TOIMPLEMENT
         # super().update(**props)
         from core.modules import console
         import pygame
@@ -44,5 +50,6 @@ class CreditsScene(Scene):
         super().handle_events(events)
 
     def _render(self):
+        """ Отрисовка бэкграунда """
         from core.consts import Colors
         self.screen.surface.fill(Colors.BLACK)

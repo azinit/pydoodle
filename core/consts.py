@@ -1,3 +1,8 @@
+"""
+Список часто используемых констант
+"""
+
+
 class ScreenSize:
     """
     Query of common used screen sizes

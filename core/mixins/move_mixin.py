@@ -3,6 +3,24 @@ from core.types.interfaces import IMaterial
 
 
 class MoveMixin(IMaterial):
+    """
+    Мискин для возможности перемещения сущности
+    @remark
+    Позволяет двигать сущность с помощью метода move(*directions),
+    Где в directions мы указываем направления из consts.Direction
+    @example
+    <pre>
+        class SomeClass(MoveMixin):
+            ...
+        ...
+        some_entity = SomeClass(...)
+        ...
+        # Двигаем сущность влево
+        some_entity.move(Direction.LEFT)
+    </pre>
+    @mixin MoveMixin
+    @implements IMaterial
+    """
     DEFAULT_SPEED = 8
 
     def __init__(self, x, y, width, height, dx=None, dy=None, **props):

@@ -2,6 +2,21 @@ from core.types.interfaces import IMaterial
 
 
 class JumpMixin(IMaterial):
+    """
+    Мискин для возможности прыжка сущности
+    @example
+    <pre>
+        class SomeClass(JumpMixin):
+            ...
+        ...
+        some_entity = SomeClass(...)
+        ...
+        # "Заставляем" сущность прыгать
+        some_entity.jump()
+    </pre>
+    @mixin JumpMixin
+    @implements IMaterial
+    """
     MAX_JUMP_COUNT = 32
 
     def __init__(self, x, y, width, height, is_jump=False, max_jump_count=None):

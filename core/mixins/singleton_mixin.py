@@ -6,6 +6,20 @@
 
 
 class SingletonMixin(object):
+    """
+    Мискин для синглтона
+    @remark
+    Позволяет создавать глобальный объект для всего класса
+    @example
+    <pre>
+        class SomeClass(SingletonMixin):
+            ...
+
+        # получение глобального объекта класса (например общего экрана, игрока, ...)
+        SomeClass.get_global()
+    </pre>
+    @mixin SingletonMixin
+    """
     DEFAULT_PROPS = {}
     __GLOBAL_INSTANCE = None
 

@@ -2,6 +2,13 @@
 
 
 class IMaterial:
+    """
+    Интерфейс "материальной" сущности
+    @remark
+    Содержит базовые свойства осязаемой сущности (x, y, width, height)
+    Дает доступ
+    @interface IMaterial
+    """
     def __init__(self, x, y, width, height):
         self.x = x
         self.y = y

@@ -10,6 +10,16 @@ from core.types.interfaces import (
 
 
 class Entity(IMaterial, IRender, IUpdate, IStateDependent):
+    """
+    Класс для обозначения обрабатываемой и отображаемой сущности
+    @remark
+    В основном реализует статические свойства и поведения, без взаимодействия
+    @class Entity
+    @implements IMaterial
+    @implements IRender
+    @implements IUpdate
+    @implements IStateDependent
+    """
     DEFAULT_STATE = {}
 
     def __init__(self, x, y, width, height, screen, initial_state=None):

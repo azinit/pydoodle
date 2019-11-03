@@ -9,6 +9,18 @@ from core.mixins import SingletonMixin
 #  https://stackoverflow.com/questions/52856030/how-to-fade-in-and-out-a-text-in-pygame
 
 class Screen(SingletonMixin):
+    """
+    Экран/Дисплей игры
+    @remark
+    1. Доступ к основному экрану получается через Screen#get_global
+    2. Позволяет обращаться к текущей сцене через SCREEN.scene.<your_method>
+    3. Служит в роли SceneManager
+    @class
+    @remark
+    @implements ISceneManager (реализую позже сам интерфейс)
+    @mixin SingletonMixin
+    @see SingletonMixin
+    """
     from core.consts import ScreenSize
 
     DEFAULT_CAPTION = "[dev] PyDoodle"
@@ -31,11 +43,13 @@ class Screen(SingletonMixin):
 
     @staticmethod
     def set_caption(caption):
+        """ Задать заголовок окну """
         import pygame
         pygame.display.set_caption(caption)
 
     @property
     def rect(self):
+        """ Обратиться к Screen как к pygame.Rect """
         from pygame import Rect
         return Rect((
             0,
@@ -46,13 +60,18 @@ class Screen(SingletonMixin):
 
     @property
     def sizes(self):
+        """ Получить размеры Screen """
         return tuple((self.width, self.height))
 
     def switch_to(self, scene):
+        """ Переключиться на сцену (scene) """
         self.scene = scene
 
     def half_sizes(self):
+        """ Получить половинные размеры """
         return tuple((self.width // 2, self.height // 2))
+
+    # Deprecated! Will be removed soon!
     # def render(self):
     #     self.scene.render()
     #

@@ -2,6 +2,13 @@ from core.controls import Control
 
 
 class Label(Control):
+    """
+    Контрол Label - для отображения текста на экране
+    @class Label
+    @extends Control
+    @todo Label#font() - метод для генерации стиля
+    @todo Label(size=...) - поле в конструкторе для указания размера текста
+    """
     import pygame
     pygame.init()
 

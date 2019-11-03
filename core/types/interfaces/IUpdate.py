@@ -1,8 +1,11 @@
-import abc
-
-
-class IUpdate(abc.ABC):
-    @abc.abstractmethod
+class IUpdate:
+    """
+    Интерфейс "обновляемой" сущности
+    @remark
+    Содержит метод update(**props)
+    В **props указываем данные (keys, mouse, ...) для обработки и обновления
+    @interface IUpdate
+    """
     def update(self, **props):
         # TODO: key, data, ... unpacking?
-        pass
+        raise NotImplementedError

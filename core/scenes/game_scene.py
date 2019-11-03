@@ -4,6 +4,14 @@ from core.types.entities import Scene
 # TODO: Level ...
 
 class GameScene(Scene):
+    """
+    Игровая сцена
+    @remark
+    1. Дает доступ к базовому геймплею и управлению игроков
+    @class GameScene
+    @extends Scene
+    @todo Уровневую генерацию (рандом или .map)
+    """
     THREAD = "GAME_SCENE"
 
     from core.models import Player

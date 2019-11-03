@@ -3,6 +3,15 @@ from core.mixins import ScreenPosMixin
 
 
 class DynamicEntity(Entity, ScreenPosMixin):
+    """
+    Класс динамической сущности
+    @remark
+    Реализует базовые динамические параметры и поведение (дин. положение относительно экрана)
+    @class DynamicEntity
+    @extends Entity
+    @mixin ScreenPosMixin
+    @todo взаимодействие с другими сущностями через события и DynamicEntity#interact_with
+    """
     def __init__(self, x, y, width, height, screen, initial_state=None):
         # Entity
         Entity.__init__(self, x, y, width, height, screen, initial_state=initial_state)

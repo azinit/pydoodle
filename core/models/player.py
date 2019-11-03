@@ -9,6 +9,17 @@ from core.mixins import (
 # MAX_JUMP_COUNT = 10
 # TODO: Process state (instead of direct properties)
 class Player(DynamicEntity, MoveMixin, JumpMixin, SingletonMixin):
+    """
+    Класс - игрок
+    Базовый класс для управления игроком(дудлом) в игре и главном меню
+    @class Player
+    @extends DynamicEntity
+    @mixin MoveMixin
+    @mixin JumpMixin
+    @mixin SingletonMixin
+    @todo Один игрок для меню и игры?
+    @todo обновление/отрисовку в миксины?
+    """
     DEFAULT_STATE = {
         "is_jump": False,
         "is_move": False,
