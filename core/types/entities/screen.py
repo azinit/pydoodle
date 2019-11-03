@@ -5,6 +5,8 @@ from core.mixins import SingletonMixin
 
 # TODO: Is object on stage (not out of border)
 # FIXME: class Screen(Surface):
+# FIXME: Fade In/Out:
+#  https://stackoverflow.com/questions/52856030/how-to-fade-in-and-out-a-text-in-pygame
 
 class Screen(SingletonMixin):
     from core.consts import ScreenSize
