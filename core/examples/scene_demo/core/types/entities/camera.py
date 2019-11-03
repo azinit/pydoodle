@@ -17,7 +17,7 @@ class Camera(object):
 
 
 def complex_camera(camera, target_rect):
-    from core.examples.scenes.core.consts import (
+    from core.examples.scene_demo.core.consts import (
         HALF_HEIGHT,
         HALF_WIDTH,
         WIN_HEIGHT,

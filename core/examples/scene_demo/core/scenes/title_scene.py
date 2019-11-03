@@ -19,7 +19,7 @@ class TitleScene(object):
         pass
 
     def handle_events(self, events):
-        from core.examples.scenes.core.types.entities import GameScene
+        from core.examples.scene_demo.core.scenes import GameScene
         from pygame import (
             KEYDOWN,
             K_SPACE

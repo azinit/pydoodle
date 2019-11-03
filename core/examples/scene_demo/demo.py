@@ -3,19 +3,20 @@ from pygame import *
 
 
 def main():
-    from core.examples.scenes.core.consts import (
+    from core.examples.scene_demo.core.consts import (
         DISPLAY,
         FLAGS,
         DEPTH
     )
     # >>> init
     pygame.init()
-    screen = pygame.display.set_mode(DISPLAY, FLAGS, DEPTH)
-    pygame.display.set_caption("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+    # screen = pygame.display.set_mode(DISPLAY, FLAGS, DEPTH)
+    screen = pygame.display.set_mode(DISPLAY)
+    pygame.display.set_caption("SceneDemo")
     timer = pygame.time.Clock()
     running = True
 
-    from core.examples.scenes.core.types.entities import SceneMananger
+    from core.examples.scene_demo.core.types.entities import SceneMananger
     manager = SceneMananger()
 
     while running:

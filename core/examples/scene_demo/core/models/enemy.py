@@ -1,4 +1,4 @@
-from core.examples.scenes.core.types.entities import Entity
+from core.examples.scene_demo.core.types.entities import Entity
 
 
 class Enemy(Entity):

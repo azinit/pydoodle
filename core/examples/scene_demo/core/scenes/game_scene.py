@@ -1,18 +1,18 @@
-from core.examples.scenes.core.types.entities import Scene
-from core.examples.scenes.core.consts import (
+from core.examples.scene_demo.core.types.entities import Scene
+from core.examples.scene_demo.core.consts import (
     levels
 )
 
 
 class GameScene(Scene):
     def __init__(self, levelno):
-        from core.examples.scenes.core.models import (
+        from core.examples.scene_demo.core.models import (
             Player,
             Enemy,
             ExitBlock,
             Platform
         )
-        from core.examples.scenes.core.types.entities import (
+        from core.examples.scene_demo.core.types.entities import (
             Camera,
             complex_camera
         )
@@ -90,7 +90,7 @@ class GameScene(Scene):
         self.camera.update(self.player)
 
     def exit(self):
-        from core.examples.scenes.core.types.entities import CustomScene
+        from core.examples.scene_demo.core.scenes import CustomScene
 
         if self.levelno + 1 in levels:
             self.manager.go_to(GameScene(self.levelno + 1))
@@ -98,12 +98,12 @@ class GameScene(Scene):
             self.manager.go_to(CustomScene("You win!"))
 
     def die(self):
-        from core.examples.scenes.core.types.entities import CustomScene
+        from core.examples.scene_demo.core.scenes import CustomScene
 
         self.manager.go_to(CustomScene("You lose!"))
 
     def handle_events(self, events):
-        from core.examples.scenes.core.types.entities import TitleScene
+        from core.examples.scene_demo.core.scenes import TitleScene
         from pygame import (
             KEYDOWN,
             K_ESCAPE,

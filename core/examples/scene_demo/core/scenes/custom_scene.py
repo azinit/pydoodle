@@ -17,7 +17,7 @@ class CustomScene(object):
 
     def handle_events(self, events):
         from pygame import KEYDOWN
-        from core.examples.scenes.core.types.entities import TitleScene
+        from core.examples.scene_demo.core.scenes import TitleScene
 
         for e in events:
             if e.type == KEYDOWN:

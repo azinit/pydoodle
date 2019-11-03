@@ -14,7 +14,8 @@ class CreditsScene(Scene):
 
         from core.controls import Label
         from core.consts import Colors
-        print("Press Space to go next")
+        from core.modules import console
+        console.log("Press Space to go next", thread=self.THREAD)
 
         hz = self.screen.half_sizes()
 
@@ -33,10 +34,15 @@ class CreditsScene(Scene):
         # super().update(**props)
         from core.modules import console
         import pygame
-        keys = props.get("keys")
+
+        # props = {
+        #     "keys": [...],
+        #     "events": []
+        # }
+        # keys = props.get("keys")
         # if keys[pygame.K_SPACE]:
         #     console.log("TO GAME >>>", thread=self.THREAD)
-        #     from core.scenes import GameScene
+        #     from core.scene_demo import GameScene
         #     self.screen.switch_to()
 
         # if keys[pygame.K_RIGHT]:

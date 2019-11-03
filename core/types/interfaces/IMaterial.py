@@ -9,6 +9,7 @@ class IMaterial:
     Дает доступ
     @interface IMaterial
     """
+
     def __init__(self, x, y, width, height):
         self.x = x
         self.y = y
@@ -34,6 +35,13 @@ class IMaterial:
         return tuple((
             self.x,
             self.y
+        ))
+
+    @property
+    def pos_int(self):
+        return tuple((
+            int(self.x),
+            int(self.y),
         ))
 
     def is_collide_with(self, another):

@@ -1,4 +1,4 @@
-from core.examples.scenes.core.types.entities import Entity
+from core.examples.scene_demo.core.types.entities import Entity
 
 
 class Player(Entity):
@@ -45,7 +45,7 @@ class Player(Entity):
 
     def collide(self, xvel, yvel, platforms):
         import pygame
-        from core.examples.scenes.core.models import ExitBlock
+        from core.examples.scene_demo.core.models import ExitBlock
 
         for p in platforms:
             if pygame.sprite.collide_rect(self, p):
