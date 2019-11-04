@@ -21,7 +21,7 @@ class Scene(IRender, IUpdate, IHandleEvents):
 
     def __init__(self, caption=None, next_scene=None):
         from core.types.entities import Screen
-        super().__init__(Screen.get_global())
+        IRender.__init__(self, Screen.get_global())
         self.caption = caption or self.screen.caption
         self.screen.set_caption(self.caption)
         self.next_scene = next_scene

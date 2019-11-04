@@ -1,9 +1,10 @@
 from core.types.entities import Scene
+from core.types.interfaces import ITexture
 
 
 # TODO: Level ...
 
-class GameScene(Scene):
+class GameScene(Scene, ITexture):
     """
     Игровая сцена
     @remark
@@ -14,16 +15,18 @@ class GameScene(Scene):
     """
     THREAD = "GAME_SCENE"
 
+    DEFAULT_TEXTURE = "game_scene/base_diffuse.png"
     from core.models import Player
     PLAYER = Player.get_global()
 
     def __init__(self, caption=None):
         from core.models import Platform, SuperPlatform
-        super().__init__(caption=caption)
+        Scene.__init__(self, caption=caption)
+        ITexture.__init__(self, self.DEFAULT_TEXTURE, *self.screen.rect_tuple, self.screen)
         self._platforms = [
             Platform(600, 200, 128, 32, self.screen),
             Platform(1000, 300, 128, 32, self.screen),
-            Platform(800, 400, 128, 32, self.screen),
+            Platform(800, 400, 256, 32, self.screen),
             Platform(600, 600, 128, 32, self.screen),
             Platform(432, 500, 128, 32, self.screen),
             Platform(200, 600, 128, 32, self.screen),
@@ -31,6 +34,11 @@ class GameScene(Scene):
             SuperPlatform(0, 600, 128, 32, self.screen),
             SuperPlatform(1000, 650, 128, 32, self.screen),
         ]
+
+        from core.types.entities import Music
+        music = Music("bg_winter.mp3")
+        music.set_volume(0.2)
+        music.play()
 
     def render(self):
         self._render_background()
@@ -65,6 +73,7 @@ class GameScene(Scene):
                 self.__reset()
 
     def _render_background(self):
+        # ITexture.render(self)
         from core.consts import Colors
         self.surface.fill(Colors.DARK)
 

@@ -48,6 +48,8 @@ class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent, IJump, IFall):
         for potential_ground in grounds:
             direction = self.collide(potential_ground)
             if direction and direction == Direction.TOP:
+                from core.types.entities import Sound
+                Sound("kick_stone.wav").play()
                 if self.state.is_bouncing:
                     self.state.is_jumping = True
                     self.state.is_falling = False

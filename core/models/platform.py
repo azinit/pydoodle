@@ -1,42 +1,31 @@
 from core.types.entities import DynamicEntity
-from core.types.interfaces import IGround
+from core.types.interfaces import IGround, ITexture
 
 
 # TODO: on_... interface
 # TODO: implement on_floor
-
-class Platform(DynamicEntity, IGround):
-    DEFAULT_INERTIA_VAL = 4
+class Platform(DynamicEntity, IGround, ITexture):
+    DEFAULT_TEXTURE = "platform/base_diffuse.png"
 
     def __init__(self, x, y, width, height, screen, initial_state=None):
         from core.consts import Colors
         DynamicEntity.__init__(self, x, y, width, height, screen, initial_state=initial_state)
-        IGround.__init__(self)
+        IGround.__init__(self, *self.rect_tuple)
+        ITexture.__init__(self, self.DEFAULT_TEXTURE, *self.rect_tuple, screen)
 
         self.elasticity = 1
-        self.state.inertia_val = self.DEFAULT_INERTIA_VAL
         self.color = Colors.D_RAVEN
-
-        self.bind("on_landed", self.on_landed)
 
     def update(self, **props):
         self.activate_bindings()
 
     def render(self):
-        self.screen.draw.rect(self.surface, self.color, self.rect)
-
-    def on_landed(self):
-        # from core.consts import Colors
-        # self.color = Colors.BLUE
-        self.state.inertia_val -= 1
-        self.rect.y += self.state.inertia_val
-
-        if self.state.inertia_val == -self.DEFAULT_INERTIA_VAL:
-            self.state.inertia_val = self.DEFAULT_INERTIA_VAL
-            self.state.on_landed = False
+        ITexture.render(self)
 
 
 class SuperPlatform(Platform):
+    DEFAULT_TEXTURE = "platform/super_diffuse.png"
+
     def __init__(self, x, y, width, height, screen):
         super().__init__(x, y, width, height, screen)
         from core.consts import Colors

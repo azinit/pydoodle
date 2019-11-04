@@ -4,9 +4,10 @@ from core.mixins import (
     GravityMixin,
     SingletonMixin,
 )
+from core.types.interfaces import ISequenceSprite
 
 
-class Player(DynamicEntity, MoveMixin, GravityMixin, SingletonMixin):
+class Player(DynamicEntity, MoveMixin, GravityMixin, SingletonMixin, ISequenceSprite):
     """
     Класс - игрок
     Базовый класс для управления игроком(дудлом) в игре и главном меню
@@ -21,20 +22,28 @@ class Player(DynamicEntity, MoveMixin, GravityMixin, SingletonMixin):
     DEFAULT_PROPS = {
         "x": 50,
         "y": 100,
-        "width": 32,
-        "height": 32,
+        "width": 64,
+        "height": 64,
         "screen": Screen.get_global()
     }
 
+    DEFAULT_TEXTURE = "doodle/base_diffuse.png"
+    DEFAULT_SPRITE = "doodle/seq-sprite_{i}.png"
+
     def __init__(self, x, y, width, height, screen, dx=None, dy=None):
         DynamicEntity.__init__(self, x, y, width, height, screen)
-        MoveMixin.__init__(self, x, y, width, height, dx, dy, ext_move=False)
-        GravityMixin.__init__(self, x, y, width, height, is_bouncing=True)
+        MoveMixin.__init__(self, *self.rect_tuple, dx, dy, ext_move=False)
+        GravityMixin.__init__(self, *self.rect_tuple, is_bouncing=True)
+
+        animation_data = ISequenceSprite.animation_data(4, self.DEFAULT_SPRITE)
+        ISequenceSprite.__init__(self, self.DEFAULT_SPRITE, animation_data, *self.rect_tuple, screen,
+                                 fr_amount=2, fr_iter=8)
 
     def update(self, **props):
         from pygame import (K_a, K_d)
         keys = props.get("keys")
 
+        ISequenceSprite.update(self, **props)
         GravityMixin.update(self, **props)
         MoveMixin.update(self, **props)
         if keys[K_a] and self.left_border_passed:
@@ -62,4 +71,44 @@ class Player(DynamicEntity, MoveMixin, GravityMixin, SingletonMixin):
         # if self.state.oriented == Direction.DOWN:
         #     color = Colors.darken(color, 32)
 
-        self.screen.draw.rect(self.surface, color, self.rect)
+        # self.screen.draw.rect(self.surface, color, self.rect)
+        ISequenceSprite.render(self)
+
+
+# TODO StateSequenceSprite
+
+data = [
+    # if in <state> => load sprites_pack
+    {
+        "property": "oriented",
+        "value": "Direction.LEFT",
+        "frame": {
+            "amount": 4,
+            "pattern": "doodle/test-sprite_left_{i}.png"
+        }
+    },
+    {
+        "property": "oriented",
+        "value": "Direction.RIGHT",
+        "frame": {
+            "amount": 4,
+            "pattern": "doodle/test-sprite_right_{i}.png"
+        }
+    },
+    {
+        "property": "oriented",
+        "value": "Direction.NORMAL",
+        "frame": {
+            "amount": 2,
+            "pattern": "doodle/test-sprite_normal_{i}.png"
+        }
+    },
+    {
+        "property": "is_fly",
+        "value": True,
+        "frame": {
+            "amount": 2,
+            "pattern": "doodle/test-sprite_fly_{i}.png"
+        }
+    }
+]

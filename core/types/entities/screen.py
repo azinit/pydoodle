@@ -49,7 +49,11 @@ class Screen(SingletonMixin):
     def rect(self):
         """ Обратиться к Screen как к pygame.Rect """
         from pygame import Rect
-        return Rect((
+        return Rect(*self.rect_tuple)
+
+    @property
+    def rect_tuple(self):
+        return tuple((
             0,
             0,
             self.width,
