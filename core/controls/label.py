@@ -39,4 +39,4 @@ class Label(Control):
         center_x = self.x - actual_sizes[0] // 2
         center_y = self.y - actual_sizes[1] // 2
         # >>> snap to surface
-        self.screen.surface.blit(rendered_label, (center_x, center_y))
+        self.surface.blit(rendered_label, (center_x, center_y))

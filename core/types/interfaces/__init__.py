@@ -5,3 +5,4 @@ from .IMaterial import IMaterial
 from .IStateDependent import IStateDependent
 from .IMove import IMove
 from .IJump import IJump
+from .ISpeed import ISpeed

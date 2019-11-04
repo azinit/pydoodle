@@ -82,7 +82,7 @@ class GameScene(Scene):
 
         pressed = pygame.key.get_pressed()
         up, left, right = [pressed[key] for key in (K_UP, K_LEFT, K_RIGHT)]
-        self.player.update(up, left, right, self.platforms)
+        self.player.update(up, left, right, self.platforms, self.enemies)
 
         for e in self.enemies:
             e.update(self.platforms)

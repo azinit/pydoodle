@@ -21,6 +21,14 @@ class Colors:
     https://www.google.com/search?q=cmyk&sxsrf=ACYBGNSIolPAI9aHVDlaOBbpA-Uqiy-xLQ:1572118163691&source=lnms&tbm=isch&sa=X&ved=0ahUKEwid-cPF1LrlAhUKxqYKHbDzBUIQ_AUIEigB&biw=1920&bih=975
     """
     # TODO: Import other's implementations ???
+
+    # DARK_SHADES https://www.google.com/search?q=shades+of+black+names&sxsrf=ACYBGNSy4cqwTxRSqVGuoRdTT6GGEa7R2A:1572816223479&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjNrrCC_c7lAhUR06YKHQM2BRoQ_AUIEigB&biw=1920&bih=945#imgrc=Lj3sl4iCpOPvyM:
+    # TODO: Implement!
+    D_JET = (21, 21, 21)
+    D_RAVEN = (57, 57, 57)
+    D_ASHER = (92, 92, 92)
+    D_STONE = (120, 120, 120)
+
     # >>> grayscale colors
     BLACK = (0, 0, 0)
     DARK = (32, 32, 32)

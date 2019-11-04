@@ -8,7 +8,7 @@ class CustomScene(object):
 
     def render(self, screen):
         # ugly!
-        screen.fill((0, 200, 0))
+        screen.fill((0, 0, 0))
         text1 = self.font.render(self.text, True, (255, 255, 255))
         screen.blit(text1, (200, 50))
 

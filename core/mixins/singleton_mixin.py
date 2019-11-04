@@ -33,3 +33,7 @@ class SingletonMixin(object):
             cls.__GLOBAL_INSTANCE = cls(**cls.DEFAULT_PROPS)
 
         return cls.__GLOBAL_INSTANCE
+
+    @classmethod
+    def _reset(cls):
+        cls.__GLOBAL_INSTANCE = cls(**cls.DEFAULT_PROPS)

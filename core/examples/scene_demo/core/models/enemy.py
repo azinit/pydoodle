@@ -13,7 +13,7 @@ class Enemy(Entity):
         self.yVel = 0
         self.xVel = 2  # start moving immediately
         self.image = Surface((32, 32))
-        self.image.fill(Color("#00FF00"))
+        self.image.fill(Color("#FFFF00"))
         self.image.convert()
         self.rect = Rect(x * 32, y * 32, 32, 32)
         self.onGround = False

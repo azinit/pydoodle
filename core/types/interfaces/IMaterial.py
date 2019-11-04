@@ -49,6 +49,11 @@ class IMaterial:
         "https://kite.com/python/docs/pygame.Rect"
         return self.rect.colliderect(another.rect)
 
+    def is_landed_on(self, potential_ground):
+        are_collide_as_ground = self.rect.bottom >= potential_ground.rect.top
+        # print(self.rect.bottom, potential_ground.rect.top)
+        return self.is_collide_with(potential_ground) and are_collide_as_ground
+
     # @classmethod
     # def are_collide(one, another):
     #     return one.is_collide_with(another)

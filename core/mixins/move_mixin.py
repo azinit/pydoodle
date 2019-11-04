@@ -1,8 +1,8 @@
 from core.consts import Direction
-from core.types.interfaces import IMaterial
+from core.types.interfaces import IMaterial, ISpeed, IUpdate
 
 
-class MoveMixin(IMaterial):
+class MoveMixin(IMaterial, ISpeed, IUpdate):
     """
     Миксин для возможности перемещения сущности
     @remark
@@ -21,13 +21,31 @@ class MoveMixin(IMaterial):
     @mixin MoveMixin
     @implements IMaterial
     """
-    DEFAULT_SPEED = 8
 
     def __init__(self, x, y, width, height, dx=None, dy=None, **props):
-        super().__init__(x, y, width, height)
-        self.dx = dx or self.DEFAULT_SPEED
-        self.dy = dy or self.DEFAULT_SPEED
+        IMaterial.__init__(self, x, y, width, height)
+        ISpeed.__init__(self, dx, dy)
         self.ext_move = props.get("ext_move", False)
+
+    # TODO: Implement!
+    # def update(self, **props):
+    #     from pygame import (
+    #         K_a,
+    #         K_d,
+    #         K_w,
+    #         K_s
+    #     )
+    #
+    #     keys = props.get("keys")
+    #     from core.consts import Direction
+    #     if keys[K_a] and not self.left_border_passed:
+    #         self.move(Direction.LEFT)
+    #     if keys[K_d] and not self.right_border_passed:
+    #         self.move(Direction.RIGHT)
+    #     if keys[K_w] and not self.top_border_passed:
+    #         self.move(Direction.UP)
+    #     if keys[K_s] and not self.bottom_border_passed:
+    #         self.move(Direction.DOWN)
 
     def move(self, *directions):
         for direction in directions:

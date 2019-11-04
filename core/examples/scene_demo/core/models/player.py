@@ -18,11 +18,13 @@ class Player(Entity):
         self.image.convert()
         self.rect = Rect(x * 32, y * 32, 32, 32)
 
-    def update(self, up, left, right, platforms):
+    def update(self, up, left, right, platforms, enemies):
         if self.rect.top > 1440 or self.rect.top < 0:
             self.scene.die()
         if self.rect.left > 1408 or self.rect.right < 0:
             self.scene.die()
+        self.collide_enemies(enemies)
+
         if up:
             if self.onGround:
                 self.yvel = 0
@@ -60,3 +62,10 @@ class Player(Entity):
                 if yvel < 0:
                     self.rect.top = p.rect.bottom
         return True
+
+    def collide_enemies(self, enemies):
+        import pygame
+
+        for e in enemies:
+            if pygame.sprite.collide_rect(self, e):
+                self.scene.die()
