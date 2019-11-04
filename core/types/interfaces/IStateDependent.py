@@ -10,5 +10,15 @@ class IStateDependent:
 
     def __init__(self, initial_state=None):
         self.state = initial_state or self.DEFAULT_STATE
+        self._bindings = []
 
-    # TODO: State operations
+    def activate_bindings(self):
+        for _prop, handler in self._bindings:
+            if getattr(self.state, _prop):
+                handler()
+
+    def bind(self, state_property, state_handler):
+        self._bindings.append((
+            state_property,
+            state_handler)
+        )

@@ -2,8 +2,6 @@ from core.types.interfaces import IMaterial, ISpeed, IUpdate, IStateDependent
 
 
 # TODO: Mixins implements one interface (ISpeed) and __init__ them overwrite properties
-
-# TODO: ? if state.is_some: some()
 class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent):
     """
     Миксин для возможности прыжка сущности
@@ -24,8 +22,6 @@ class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent):
     JUMP_POTENTIAL_VELOCITY = ISpeed.DEFAULT_SPEED * 2
     GRAVITY_ACCELERATION = 0.5
 
-    # TODO: Realize accelerate?
-
     def __init__(self, x, y, width, height, **props):
         IMaterial.__init__(self, x, y, width, height)
         ISpeed.__init__(self, **props)
@@ -35,8 +31,10 @@ class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent):
         self.state.is_bouncing = props.get("is_bouncing", False)
         self.state.ground = None
 
-        # TODO: Implement!
-        # self.fall.state =
+        # >>> auto jump() if state.is_jumping
+        self.bind("is_jumping", self.jump)
+        self.bind("is_falling", self.fall)
+
         self._gravity_info = None
 
     def update(self, **props):
@@ -65,11 +63,7 @@ class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent):
             self.speed.y = self.JUMP_POTENTIAL_VELOCITY
 
         # # >>> check state
-        if self.state.is_jumping:
-            self.jump()
-
-        if self.state.is_falling:
-            self.fall()
+        self.activate_bindings()
 
     def jump(self):
         self.state.is_falling = False
