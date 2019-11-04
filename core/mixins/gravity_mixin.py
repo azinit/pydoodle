@@ -25,7 +25,6 @@ class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent):
     GRAVITY_ACCELERATION = 0.5
 
     # TODO: Realize accelerate?
-    # TODO: state dependent
 
     def __init__(self, x, y, width, height, **props):
         IMaterial.__init__(self, x, y, width, height)
@@ -35,17 +34,21 @@ class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent):
         self.state.is_falling = props.get("is_falling", False)
         self.state.is_bouncing = props.get("is_bouncing", False)
         self.state.ground = None
+
+        # TODO: Implement!
+        # self.fall.state =
         self._gravity_info = None
 
     def update(self, **props):
         from pygame import K_SPACE
-
+        from core.consts import Direction
         keys = props.get("keys")
         grounds = props.get("grounds", [])
 
-        # >>> set state
+        # # >>> set state
         for potential_ground in grounds:
-            if self.is_landed_on(potential_ground):
+            direction = self.collide(potential_ground)
+            if direction and direction == Direction.TOP:
                 if self.state.is_bouncing:
                     self.state.is_jumping = True
                     self.state.is_falling = False
@@ -69,11 +72,10 @@ class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent):
             self.fall()
 
     def jump(self):
-        # console.log("^ JUMP", flush=True)
         self.state.is_falling = False
         self.state.ground = None
 
-        self.y -= self.speed.y
+        self.rect.y -= self.speed.y
         self.speed.y -= self.GRAVITY_ACCELERATION
         if self.speed.y < 0:
             self.fall()
@@ -91,25 +93,22 @@ class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent):
         # else:
         #     self.land()
 
-    # TODO: implement landed_ground
     def land(self, ground):
-        # console.log("- LAND", flush=True)
         self.state.is_jumping = False
         self.state.is_falling = False
+        self.state.ground = ground
 
         self.speed.y = 0
-        self.state.ground = ground
         # FIXME:
-        self.y = ground.rect.top - self.height + 2
+        self.rect.y = ground.rect.top - self.height + 2
 
     def fall(self):
-        # console.log("V FALL", flush=True)
         self.state.is_jumping = False
         self.state.is_falling = True
         self.state.ground = None
 
         self.speed.y -= self.GRAVITY_ACCELERATION
-        self.y -= self.speed.y
+        self.rect.y -= self.speed.y
 
     # @property
     # def JUMP_POTENTIAL_VELOCITY(self):

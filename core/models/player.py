@@ -7,7 +7,6 @@ from core.mixins import (
 
 
 # TODO: accelerate gravity
-# MAX_JUMP_COUNT = 10
 # TODO: Process state (instead of direct properties)
 class Player(DynamicEntity, MoveMixin, GravityMixin, SingletonMixin):
     """
@@ -38,7 +37,7 @@ class Player(DynamicEntity, MoveMixin, GravityMixin, SingletonMixin):
         self.state.oriented = Direction.NORMAL
 
     def update(self, **props):
-        import pygame
+        from pygame import (K_w, K_a, K_s, K_d)
         keys = props.get("keys")
         platforms = props.get("platforms", [])
         GravityMixin.update(self, keys=keys, grounds=platforms)
@@ -49,14 +48,14 @@ class Player(DynamicEntity, MoveMixin, GravityMixin, SingletonMixin):
         # FIXME: Optimize?
         # >>> LEFT
         # if keys[pygame.K_a] and not self.left_border_passed:
-        if keys[pygame.K_a]:
+        if keys[K_a]:
             if self.left_border_passed:
                 self.drop_right()
             self.move(Direction.LEFT)
             self.state.oriented = Direction.LEFT
         # >>> RIGHT
         # if keys[pygame.K_d] and not self.right_border_passed:
-        if keys[pygame.K_d]:
+        if keys[K_d]:
             if self.right_border_passed:
                 self.drop_left()
             self.move(Direction.RIGHT)
@@ -66,19 +65,19 @@ class Player(DynamicEntity, MoveMixin, GravityMixin, SingletonMixin):
 
         if self.ext_move:
             # >>> UP
-            if keys[pygame.K_w] and not self.top_border_passed:
-                self.move(Direction.UP)
-                self.state.oriented = Direction.UP
+            if keys[K_w] and not self.top_border_passed:
+                self.move(Direction.TOP)
+                self.state.oriented = Direction.TOP
             # >>> DOWN
-            if keys[pygame.K_s] and not self.bottom_border_passed:
-                self.move(Direction.DOWN)
-                self.state.oriented = Direction.DOWN
+            if keys[K_s] and not self.bottom_border_passed:
+                self.move(Direction.BOTTOM)
+                self.state.oriented = Direction.BOTTOM
 
         # FIXME: Optimize?
         if self.state.is_jumping:
-            self.state.oriented = Direction.UP
+            self.state.oriented = Direction.TOP
         if self.state.is_falling:
-            self.state.oriented = Direction.DOWN
+            self.state.oriented = Direction.BOTTOM
 
     def render(self):
         import pygame

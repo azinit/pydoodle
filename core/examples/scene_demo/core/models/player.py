@@ -23,7 +23,9 @@ class Player(Entity):
             self.scene.die()
         if self.rect.left > 1408 or self.rect.right < 0:
             self.scene.die()
-        self.collide_enemies(enemies)
+
+        # check enemies
+        # self.collide_enemies(enemies)
 
         if up:
             if self.onGround:

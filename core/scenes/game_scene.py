@@ -24,11 +24,13 @@ class GameScene(Scene):
             Platform(600, 100, 128, 32, self.screen),
             Platform(1000, 200, 128, 32, self.screen),
             Platform(800, 300, 128, 32, self.screen),
-            Platform(600, 400, 128, 32, self.screen),
-            Platform(432, 500, 128, 32, self.screen),
+            Platform(600, 500, 128, 32, self.screen),
+            Platform(432, 400, 128, 32, self.screen),
             Platform(200, 500, 128, 32, self.screen),
+            Platform(200, 100, 128, 32, self.screen),
             SuperPlatform(0, 500, 128, 32, self.screen),
         ]
+
         # import copy
         # self.PLAYER_COPY = copy.copy(self.PLAYER)
 

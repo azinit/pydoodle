@@ -7,7 +7,8 @@ class Control(Entity):
     @class Control
     @extends Entity
     """
-    def __init__(self, x, y, screen, width=None, height=None):
+
+    def __init__(self, x, y, screen, width, height):
         super().__init__(x, y, width, height, screen)
 
     def update(self, **props):

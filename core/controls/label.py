@@ -18,13 +18,19 @@ class Label(Control):
     DEFAULT_COLOR = Colors.BLACK
 
     def __init__(self, x, y, screen, text, **props):
-        super().__init__(x, y, screen)
         self.font = props.get("font", self.DEFAULT_FONT)
         self.antialias = props.get("antialias", True)
         self.color = props.get("color", self.DEFAULT_COLOR)
         self.text = text
+
+        # FIXME:
+        super().__init__(x, y, screen, *self.sizes)
         # TODO: Implement!
         # self.size = size
+
+    @property
+    def sizes(self):
+        return self.font.render(self.text, self.antialias, self.color).get_size()
 
     def update(self, **props):
         new_text = props.get("text")

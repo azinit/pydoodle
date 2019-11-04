@@ -59,12 +59,11 @@ class Direction:
     Direction kinds
     """
 
-    # TODO: UP/DOWN -> TOP/BOTTOM
     NORMAL = -1
     RIGHT = 0
-    UP = 1
+    TOP = 1
     LEFT = 2
-    DOWN = 3
+    BOTTOM = 3
 
 
 """

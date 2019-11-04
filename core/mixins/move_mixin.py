@@ -20,6 +20,7 @@ class MoveMixin(IMaterial, ISpeed, IUpdate):
     </pre>
     @mixin MoveMixin
     @implements IMaterial
+    @todo move acceleration
     """
 
     def __init__(self, x, y, width, height, dx=None, dy=None, **props):
@@ -55,12 +56,15 @@ class MoveMixin(IMaterial, ISpeed, IUpdate):
         # FIXME: Better implementation
         # FIXME: Add core/validators?
         if direction == Direction.LEFT:
-            self.x -= self.speed.x
+            self.rect.x -= self.speed.x
         if direction == Direction.RIGHT:
-            self.x += self.speed.x
+            self.rect.x += self.speed.x
 
         if self.ext_move:
-            if direction == Direction.UP:
-                self.y -= self.speed.y
-            if direction == Direction.DOWN:
-                self.y += self.speed.y
+            # was implementad as self.y -= self.speed.y
+            # FIXME: !!!
+
+            if direction == Direction.TOP:
+                self.rect.y -= self.speed.x
+            if direction == Direction.BOTTOM:
+                self.rect.y += self.speed.x
