@@ -20,7 +20,7 @@ class CreditsScene(Scene):
         hz = self.screen.half_sizes()
 
         # >>> Init Controls
-        self._credit = Label(*hz, self.screen, label_text, color=Colors.WHITE)
+        self._credit = Label(*hz, self.screen, label_text, color=Colors.WHITE, font_size=50)
         self._controls.extend([
             self._credit
         ])

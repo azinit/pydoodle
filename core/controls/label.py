@@ -6,31 +6,44 @@ class Label(Control):
     Контрол Label - для отображения текста на экране
     @class Label
     @extends Control
-    @todo Label#font() - метод для генерации стиля
-    @todo Label(size=...) - поле в конструкторе для указания размера текста
     """
-    import pygame
-    pygame.init()
 
     from core.consts import Colors
-
-    DEFAULT_FONT = pygame.font.SysFont("Calibri", 56)
     DEFAULT_COLOR = Colors.BLACK
 
     def __init__(self, x, y, screen, text, **props):
-        self.font = props.get("font", self.DEFAULT_FONT)
+        super().__init__(x, y, screen, 0, 0)
+        # >>> init font
+        self.family = props.get("font_family", "Calibri")
+        self.size = props.get("font_size", 56)
+        self.bold = props.get("bold", False)
+        self.italic = props.get("italic", False)
+        self.font = self.generate_font(
+            font_family=self.family,
+            font_size=self.size,
+            bold=self.bold, italic=self.italic
+        )
+        # >>> init other properties
         self.antialias = props.get("antialias", True)
         self.color = props.get("color", self.DEFAULT_COLOR)
         self.text = text
+        # >>> re-init sizes
+        self.rect.width, self.rect.height = self.sizes()
 
-        # FIXME:
-        super().__init__(x, y, screen, *self.sizes)
-        # TODO: Implement!
-        # self.size = size
+    @staticmethod
+    def generate_font(font_family, font_size, **props):
+        import pygame
+        pygame.init()
 
-    @property
+        return pygame.font.SysFont(
+            name=font_family,
+            size=font_size,
+            bold=props.get("bold", False),
+            italic=props.get("italic", False),
+        )
+
     def sizes(self):
-        return self.font.render(self.text, self.antialias, self.color).get_size()
+        return self.font.size(self.text)
 
     def update(self, **props):
         new_text = props.get("text")
