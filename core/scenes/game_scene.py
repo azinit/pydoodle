@@ -21,14 +21,15 @@ class GameScene(Scene):
         from core.models import Platform, SuperPlatform
         super().__init__(caption=caption)
         self._platforms = [
-            Platform(600, 100, 128, 32, self.screen),
-            Platform(1000, 200, 128, 32, self.screen),
-            Platform(800, 300, 128, 32, self.screen),
-            Platform(600, 500, 128, 32, self.screen),
-            Platform(432, 400, 128, 32, self.screen),
-            Platform(200, 500, 128, 32, self.screen),
-            Platform(200, 100, 128, 32, self.screen),
-            SuperPlatform(0, 500, 128, 32, self.screen),
+            Platform(600, 200, 128, 32, self.screen),
+            Platform(1000, 300, 128, 32, self.screen),
+            Platform(800, 400, 128, 32, self.screen),
+            Platform(600, 600, 128, 32, self.screen),
+            Platform(432, 500, 128, 32, self.screen),
+            Platform(200, 600, 128, 32, self.screen),
+            Platform(200, 200, 128, 32, self.screen),
+            SuperPlatform(0, 600, 128, 32, self.screen),
+            SuperPlatform(1000, 650, 128, 32, self.screen),
         ]
 
     def render(self):
@@ -42,6 +43,7 @@ class GameScene(Scene):
             self.__reset()
             self.screen.switch_to(DeathScene(caption="Game Over", next_scene=self))
         else:
+            self.__update_platforms()
             self.PLAYER.update(grounds=self._platforms, **props)
             info = self.PLAYER.gravity_info
             if info:
@@ -69,6 +71,10 @@ class GameScene(Scene):
     def __render_platforms(self):
         for _platform in self._platforms:
             _platform.render()
+
+    def __update_platforms(self):
+        for _platform in self._platforms:
+            _platform.update()
 
     def __reset(self):
         from core.models import Player

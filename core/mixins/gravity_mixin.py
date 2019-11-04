@@ -44,6 +44,7 @@ class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent, IJump, IFall):
         grounds = props.get("grounds", [])
 
         # # >>> set state
+        # TODO: To Player logic?
         for potential_ground in grounds:
             direction = self.collide(potential_ground)
             if direction and direction == Direction.TOP:
@@ -54,6 +55,9 @@ class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent, IJump, IFall):
                     self.speed.y = self.JUMP_POTENTIAL_VELOCITY * potential_ground.elasticity
                 else:
                     self.land(potential_ground)
+
+                potential_ground.state.on_landed = True
+
                 break
         else:
             self.state.is_falling = True

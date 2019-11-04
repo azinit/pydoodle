@@ -21,7 +21,8 @@ class ScreenPosMixin(IMaterial):
     @implements IMaterial
     """
     # FIXME: !!!
-    BORDER_INACCURACY = 16
+    # BORDER_INACCURACY = 16
+    BORDER_INACCURACY = 0
 
     def __init__(self, x, y, width, height, screen):
         IMaterial.__init__(self, x, y, width, height)

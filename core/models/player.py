@@ -27,7 +27,7 @@ class Player(DynamicEntity, MoveMixin, GravityMixin, SingletonMixin):
     }
 
     def __init__(self, x, y, width, height, screen, dx=None, dy=None):
-        DynamicEntity.__init__(self, x, y, width, height, screen, initial_state=self.DEFAULT_STATE)
+        DynamicEntity.__init__(self, x, y, width, height, screen)
         MoveMixin.__init__(self, x, y, width, height, dx, dy, ext_move=False)
         GravityMixin.__init__(self, x, y, width, height, is_bouncing=True)
 

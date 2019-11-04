@@ -7,3 +7,4 @@ from .IMove import IMove
 from .IJump import IJump
 from .IFall import IFall
 from .ISpeed import ISpeed
+from .IGround import IGround

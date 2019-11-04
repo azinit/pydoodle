@@ -93,6 +93,8 @@ class IMaterial:
         # if sum(dirs) != 1:
         #     print("DOUBLE!")
         #     return None
+        if not self.is_collide_with(another):
+            return None
 
         if self.is_collide_by_bottom(another):
             self.rect.top = another.rect.bottom
