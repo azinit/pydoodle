@@ -1,7 +1,6 @@
 # TODO: Singletone
 # https://python-3-patterns-idioms-test.readthedocs.io/en/latest/Singleton.html
-
-# TODO PLAYER -> GameSssion?
+# TODO PLAYER -> GameSession?
 
 import pygame
 from core.modules import *
@@ -29,10 +28,7 @@ class GameSession(object):
         pygame.init()                           # >>> init lib
         self.clock = pygame.time.Clock()        # >>> init clock
         self.is_running = True                  # >>> init gameloop
-        self.SCREEN.switch_to(credits_itis)
-        # self.SCREEN.switch_to(CreditsScene(     # >>> init first scene
-        #     caption="Credits | PyDoodle"
-        # ))
+        self.SCREEN.switch_to(credits_itis)     # >>> init first scene
 
     def run(self):
         """ Start gameloop """

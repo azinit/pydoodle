@@ -46,7 +46,7 @@ class Scene(IRender, IUpdate, IHandleEvents):
                 if self.next_scene:
                     self.screen.switch_to(self.next_scene)
 
-    def _render(self):
+    def _render_background(self):
         """ Как правило, служит для пре-отрисовки перед отрисовкой контролов и моделей """
         raise NotImplementedError
 

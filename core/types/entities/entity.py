@@ -5,9 +5,8 @@ from core.types.interfaces import (
     IStateDependent
 )
 
-# TODO: Or pygame.sprite???
-# TODO: Interfaces for other...
 
+# FIXME: @extends pygame.sprite???
 
 class Entity(IMaterial, IRender, IUpdate, IStateDependent):
     """

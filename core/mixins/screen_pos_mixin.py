@@ -1,4 +1,3 @@
-# TODO: IMaterial implements
 from core.types.interfaces import IMaterial
 
 
@@ -27,7 +26,6 @@ class ScreenPosMixin(IMaterial):
     def __init__(self, x, y, width, height, screen):
         IMaterial.__init__(self, x, y, width, height)
         self.screen = screen
-        # for @property#position_info
         self._position_info = None
 
     @property
@@ -51,16 +49,13 @@ class ScreenPosMixin(IMaterial):
             R=labels[1],
             T=labels[2],
             B=labels[3],
-
         )
 
         IS_UNDEFINED = self._position_info is None
         IS_CHANGED = self._position_info != info
         if IS_UNDEFINED or IS_CHANGED:
             self._position_info = info
-            # print(":::", self._position_info)
             return info
-
         return None
 
     @property

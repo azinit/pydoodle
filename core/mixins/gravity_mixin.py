@@ -1,8 +1,8 @@
-from core.types.interfaces import IMaterial, ISpeed, IUpdate, IStateDependent
+from core.types.interfaces import IMaterial, ISpeed, IUpdate, IStateDependent, IJump, IFall
 
 
-# TODO: Mixins implements one interface (ISpeed) and __init__ them overwrite properties
-class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent):
+# TODO Mixins implements one interface (ISpeed) and __init__ them overwrite properties
+class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent, IJump, IFall):
     """
     Миксин для возможности прыжка сущности
     @example
@@ -93,7 +93,6 @@ class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent):
         self.state.ground = ground
 
         self.speed.y = 0
-        # FIXME:
 
     def fall(self):
         self.state.is_jumping = False
