@@ -94,7 +94,6 @@ class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent):
 
         self.speed.y = 0
         # FIXME:
-        self.rect.y = ground.rect.top - self.height + 2
 
     def fall(self):
         self.state.is_jumping = False

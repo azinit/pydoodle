@@ -1,8 +1,8 @@
 from core.consts import Direction
-from core.types.interfaces import IMaterial, ISpeed, IUpdate
+from core.types.interfaces import IMaterial, ISpeed, IUpdate, IStateDependent
 
 
-class MoveMixin(IMaterial, ISpeed, IUpdate):
+class MoveMixin(IMaterial, ISpeed, IUpdate, IStateDependent):
     """
     Миксин для возможности перемещения сущности
     @remark
@@ -23,30 +23,35 @@ class MoveMixin(IMaterial, ISpeed, IUpdate):
     @todo move acceleration
     """
 
+    DEFAULT_LIMITERS = [True, True, True, True]
+
     def __init__(self, x, y, width, height, dx=None, dy=None, **props):
         IMaterial.__init__(self, x, y, width, height)
         ISpeed.__init__(self, dx=dx, dy=dy)
+        IStateDependent.__init__(self)
         self.ext_move = props.get("ext_move", False)
+        self.move_limiters = props.get("move_limiters", self.DEFAULT_LIMITERS)
+        self.state.oriented = Direction.NORMAL
 
-    # TODO: Implement!
-    # def update(self, **props):
-    #     from pygame import (
-    #         K_a,
-    #         K_d,
-    #         K_w,
-    #         K_s
-    #     )
-    #
-    #     keys = props.get("keys")
-    #     from core.consts import Direction
-    #     if keys[K_a] and not self.left_border_passed:
-    #         self.move(Direction.LEFT)
-    #     if keys[K_d] and not self.right_border_passed:
-    #         self.move(Direction.RIGHT)
-    #     if keys[K_w] and not self.top_border_passed:
-    #         self.move(Direction.UP)
-    #     if keys[K_s] and not self.bottom_border_passed:
-    #         self.move(Direction.DOWN)
+    def update(self, **props):
+        from pygame import (K_w, K_a, K_s, K_d)
+        keys = props.get("keys")
+
+        if keys[K_a]:
+            self.move(Direction.LEFT)
+            self.state.oriented = Direction.LEFT
+
+        if keys[K_d]:
+            self.move(Direction.RIGHT)
+            self.state.oriented = Direction.RIGHT
+
+        if keys[K_w] and self.ext_move:
+            self.move(Direction.TOP)
+            self.state.oriented = Direction.TOP
+
+        if keys[K_s] and self.ext_move:
+            self.move(Direction.BOTTOM)
+            self.state.oriented = Direction.BOTTOM
 
     def move(self, *directions):
         for direction in directions:
@@ -61,9 +66,7 @@ class MoveMixin(IMaterial, ISpeed, IUpdate):
             self.rect.x += self.speed.x
 
         if self.ext_move:
-            # was implementad as self.y -= self.speed.y
-            # FIXME: !!!
-
+            # FIXME: was implemented as self.y -= self.speed.y
             if direction == Direction.TOP:
                 self.rect.y -= self.speed.x
             if direction == Direction.BOTTOM:

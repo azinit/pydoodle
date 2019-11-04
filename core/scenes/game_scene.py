@@ -45,7 +45,7 @@ class GameScene(Scene):
             self.__reset()
             self.screen.switch_to(DeathScene(caption="Game Over", next_scene=self))
         else:
-            self.PLAYER.update(platforms=self._platforms, **props)
+            self.PLAYER.update(grounds=self._platforms, **props)
             # info = PLAYER.is_inside_the_screen
             from pygame import (
                 K_LCTRL,
