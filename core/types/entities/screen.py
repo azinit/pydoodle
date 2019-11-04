@@ -1,13 +1,10 @@
 from core.mixins import SingletonMixin
 
 
-#
-
 # TODO: Is object on stage (not out of border)
 # FIXME: class Screen(Surface):
 # FIXME: Fade In/Out:
 #  https://stackoverflow.com/questions/52856030/how-to-fade-in-and-out-a-text-in-pygame
-# TODO: draw, fill, blit functionality,
 
 class Screen(SingletonMixin):
     """
@@ -72,6 +69,15 @@ class Screen(SingletonMixin):
         """ Получить половинные размеры """
         return tuple((self.width // 2, self.height // 2))
 
+    @property
+    def draw(self):
+        import pygame
+        return pygame.draw
+
+    @property
+    def blit(self):
+        # TODO: Implement
+        raise NotImplementedError
     # Deprecated! Will be removed soon!
     # def render(self):
     #     self.scene.render()
