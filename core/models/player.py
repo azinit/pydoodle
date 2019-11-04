@@ -17,6 +17,7 @@ class Player(DynamicEntity, MoveMixin, GravityMixin, SingletonMixin, ISequenceSp
     @mixin JumpMixin
     @mixin SingletonMixin
     @todo Один игрок для меню и игры?
+    @todo Добавить анимацию для падения и полета
     """
 
     DEFAULT_PROPS = {

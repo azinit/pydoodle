@@ -14,4 +14,5 @@ from .ISequenceSprite import ISequenceSprite
 from .IPlay import IPlay
 from .IStop import IStop
 from .IPause import IPause
+from .IPulse import IPulse
 

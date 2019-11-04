@@ -14,6 +14,7 @@ TODO LIST
                               |  x, y
     Mixins as decorators?
     SomeMixin -> Controller? (MoveController, JumpController)
+    Entity / DynamicEntity + ITexture??? (Fix inheritance connections)
 """
 
 

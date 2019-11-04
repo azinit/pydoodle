@@ -20,7 +20,7 @@ class GameScene(Scene, ITexture):
     PLAYER = Player.get_global()
 
     def __init__(self, caption=None):
-        from core.models import Platform, SuperPlatform
+        from core.models import Platform, SuperPlatform, JetPack, Effect, ScoreBoost
         Scene.__init__(self, caption=caption)
         ITexture.__init__(self, self.DEFAULT_TEXTURE, *self.screen.rect_tuple, self.screen)
         self._platforms = [
@@ -34,6 +34,11 @@ class GameScene(Scene, ITexture):
             SuperPlatform(0, 600, 128, 32, self.screen),
             SuperPlatform(1000, 650, 128, 32, self.screen),
         ]
+        self._effects = [
+            Effect(200, 150, 32, 32, self.screen),
+            JetPack(200, 450, 32, 32, self.screen),
+            ScoreBoost(1000, 600, 32, 32, self.screen),
+        ]
 
         from core.types.entities import Music
         music = Music("bg_winter.mp3")
@@ -43,6 +48,7 @@ class GameScene(Scene, ITexture):
     def render(self):
         self._render_background()
         self.__render_platforms()
+        self.__render_effects()
         self.PLAYER.render()
 
     def update(self, **props):
@@ -52,6 +58,7 @@ class GameScene(Scene, ITexture):
             self.screen.switch_to(DeathScene(caption="Game Over", next_scene=self))
         else:
             self.__update_platforms()
+            self.__update_effects()
             self.PLAYER.update(grounds=self._platforms, **props)
             info = self.PLAYER.gravity_info
             if info:
@@ -89,3 +96,11 @@ class GameScene(Scene, ITexture):
         from core.models import Player
         Player._reset()
         self.PLAYER = Player.get_global()
+
+    def __update_effects(self):
+        for _effect in self._effects:
+            _effect.update()
+
+    def __render_effects(self):
+        for _effect in self._effects:
+            _effect.render()

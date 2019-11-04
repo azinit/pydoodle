@@ -2,6 +2,9 @@ from core.types.interfaces import IPureSprite
 
 
 class ISequenceSprite(IPureSprite):
+    """
+    @todo Добавить возможность анализировать спрайт из текстурного атласа
+    """
     PATH_TO_SPRITES = "resources/sprites/"
 
     def __init__(self, texture_path, animation_data, x, y, width, height, screen, **props):

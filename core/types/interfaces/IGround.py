@@ -12,7 +12,6 @@ class IGround(IMaterial, IStateDependent):
         self.bind("on_landed", self.on_landed)
 
     def on_landed(self):
-        # print(self.state.inertia_val)
         self.rect.y += self.state.inertia_val
 
         if self.state.inertia_val == -self.DEFAULT_INERTIA_VAL:
