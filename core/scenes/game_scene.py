@@ -18,14 +18,16 @@ class GameScene(Scene):
     PLAYER = Player.get_global()
 
     def __init__(self, caption=None):
-        from core.models import Platform
+        from core.models import Platform, SuperPlatform
         super().__init__(caption=caption)
         self._platforms = [
-            Platform(200, 100, 128, 32, self.screen),
-            Platform(600, 200, 128, 32, self.screen),
-            Platform(400, 300, 128, 32, self.screen),
-            Platform(200, 400, 128, 32, self.screen),
-            Platform(32, 500, 128, 32, self.screen),
+            Platform(600, 100, 128, 32, self.screen),
+            Platform(1000, 200, 128, 32, self.screen),
+            Platform(800, 300, 128, 32, self.screen),
+            Platform(600, 400, 128, 32, self.screen),
+            Platform(432, 500, 128, 32, self.screen),
+            Platform(200, 500, 128, 32, self.screen),
+            SuperPlatform(0, 500, 128, 32, self.screen),
         ]
         # import copy
         # self.PLAYER_COPY = copy.copy(self.PLAYER)
@@ -36,23 +38,28 @@ class GameScene(Scene):
         self.PLAYER.render()
 
     def update(self, **props):
-        self.PLAYER.update(platforms=self._platforms, **props)
-        # info = PLAYER.is_inside_the_screen
-        from pygame import (
-            K_LCTRL,
-            K_RCTRL,
-            K_z
-        )
+        if self.PLAYER.bottom_border_passed:
+            from core.scenes import DeathScene
+            self.__reset()
+            self.screen.switch_to(DeathScene(caption="Game Over", next_scene=self))
+        else:
+            self.PLAYER.update(platforms=self._platforms, **props)
+            # info = PLAYER.is_inside_the_screen
+            from pygame import (
+                K_LCTRL,
+                K_RCTRL,
+                K_z
+            )
 
-        keys = props.get("keys")
+            keys = props.get("keys")
 
-        # if keys[K_LCTRL] and keys[K_z]:
-        #     self.__reset()
+            # if keys[K_LCTRL] and keys[K_z]:
+            #     self.__reset()
 
-        info = self.PLAYER.position_info
-        if info:
-            from core.modules import console
-            console.log(info, thread=self.THREAD)
+            info = self.PLAYER.gravity_info
+            if info:
+                from core.modules import console
+                console.log(info, thread=self.THREAD, flush=True)
 
     def handle_events(self, events):
         from pygame import (

@@ -45,6 +45,14 @@ class Colors:
     BLUE = (0, 0, 255)
     VIOLET = (255, 0, 255)
 
+    @staticmethod
+    def darken(color: tuple, value: int):
+        return tuple(p - value for p in color)
+
+    @staticmethod
+    def lighten(color: tuple, value: int):
+        return tuple(p + value for p in color)
+
 
 class Direction:
     """
@@ -52,6 +60,7 @@ class Direction:
     """
 
     # TODO: UP/DOWN -> TOP/BOTTOM
+    NORMAL = -1
     RIGHT = 0
     UP = 1
     LEFT = 2

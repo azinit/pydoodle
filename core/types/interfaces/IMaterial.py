@@ -51,8 +51,10 @@ class IMaterial:
 
     def is_landed_on(self, potential_ground):
         are_collide_as_ground = self.rect.bottom >= potential_ground.rect.top
+        # FIXME: !!!
+        not_collide_as_jumped = self.rect.top <= potential_ground.rect.bottom
         # print(self.rect.bottom, potential_ground.rect.top)
-        return self.is_collide_with(potential_ground) and are_collide_as_ground
+        return self.is_collide_with(potential_ground) and are_collide_as_ground and not_collide_as_jumped
 
     # @classmethod
     # def are_collide(one, another):

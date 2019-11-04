@@ -78,3 +78,9 @@ class ScreenPosMixin(IMaterial):
     @property
     def bottom_border_passed(self):
         return self.rect.bottom >= self.screen.rect.bottom - self.BORDER_INACCURACY
+
+    def drop_left(self):
+        self.x = 0
+
+    def drop_right(self):
+        self.x = self.screen.width

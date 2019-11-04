@@ -20,7 +20,6 @@ class Entity(IMaterial, IRender, IUpdate, IStateDependent):
     @implements IUpdate
     @implements IStateDependent
     """
-    DEFAULT_STATE = {}
 
     def __init__(self, x, y, width, height, screen, initial_state=None):
         IMaterial.__init__(self, x, y, width, height)

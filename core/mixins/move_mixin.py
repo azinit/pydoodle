@@ -24,7 +24,7 @@ class MoveMixin(IMaterial, ISpeed, IUpdate):
 
     def __init__(self, x, y, width, height, dx=None, dy=None, **props):
         IMaterial.__init__(self, x, y, width, height)
-        ISpeed.__init__(self, dx, dy)
+        ISpeed.__init__(self, dx=dx, dy=dy)
         self.ext_move = props.get("ext_move", False)
 
     # TODO: Implement!
@@ -55,12 +55,12 @@ class MoveMixin(IMaterial, ISpeed, IUpdate):
         # FIXME: Better implementation
         # FIXME: Add core/validators?
         if direction == Direction.LEFT:
-            self.x -= self.dx
+            self.x -= self.speed.x
         if direction == Direction.RIGHT:
-            self.x += self.dx
+            self.x += self.speed.x
 
         if self.ext_move:
             if direction == Direction.UP:
-                self.y -= self.dy
+                self.y -= self.speed.y
             if direction == Direction.DOWN:
-                self.y += self.dy
+                self.y += self.speed.y

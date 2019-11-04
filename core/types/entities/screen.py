@@ -7,6 +7,7 @@ from core.mixins import SingletonMixin
 # FIXME: class Screen(Surface):
 # FIXME: Fade In/Out:
 #  https://stackoverflow.com/questions/52856030/how-to-fade-in-and-out-a-text-in-pygame
+# TODO: draw, fill, blit functionality,
 
 class Screen(SingletonMixin):
     """

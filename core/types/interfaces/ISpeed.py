@@ -1,8 +1,9 @@
 class ISpeed:
     DEFAULT_SPEED = 8
     DEFAULT_GRAVITY = 4
-    # TODO: self.speed?
 
-    def __init__(self, dx=None, dy=None):
-        self.dx = dx or self.DEFAULT_SPEED
-        self.dy = dy or self.DEFAULT_SPEED
+    def __init__(self, **speed):
+        from types import SimpleNamespace
+        self.speed = SimpleNamespace()
+        self.speed.x = speed.get("dx") or self.DEFAULT_SPEED
+        self.speed.y = speed.get("dy") or 0
