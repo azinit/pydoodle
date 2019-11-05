@@ -38,11 +38,6 @@ class Label(Control):
             italic=props.get("italic", False),
         )
 
-    # FIXME:
-    # @property
-    # def image(self):
-    #     return self.rendered_label
-
     def sizes(self):
         return self.font.size(self.text)
 

@@ -23,32 +23,30 @@ class GameScene(Scene, ITexture, IScroll):
     on_best_score = lambda **props: None
 
     def __init__(self, caption=None):
-        from core.controls import Button, Label
-        from core.consts import Colors
-
         Scene.__init__(self, caption=caption)
         ITexture.__init__(self, self.DEFAULT_TEXTURE, *self.screen.rect_tuple, self.screen,
                           auto_scale=False, auto_convert=True)
-
         IScroll.__init__(self)
 
-        # self.test_btn = Button(100, 100, 128, 32, self.screen, text="Click me", font_size=16)
+        from core.controls import Label
+        from core.consts import Colors
 
-        # print(self.test_btn)
-        self.score = 0
-
+        self.__reset_entities()
         self._controls.extend([
             Label("BEST SCORE:", 100, 32, self.screen, color=Colors.WHITE, font_size=24),
             Label("ACTUAL SCORE:", 100, 64, self.screen, color=Colors.WHITE, font_size=24),
-            Label(str(self.BEST_SCORE), 200, 32, self.screen, color=Colors.GREEN, font_size=24),
-            Label(str(self.score), 200, 64, self.screen, color=Colors.YELLOW, font_size=24),
+            Label("0", 200, 32, self.screen, color=Colors.GREEN, font_size=24),
+            Label("0", 200, 64, self.screen, color=Colors.YELLOW, font_size=24),
         ])
-
-        self.__reset_entities()
 
     def __reset_entities(self):
         from core.models import Platform, SuperPlatform, JetPack, Effect, ScoreBoost
         from core.types.entities import Music
+
+        self.score = 0
+
+        # self.test_btn = Button(None, 100, 100, 128, 32, self.screen, text="Click me", font_size=16)
+        # print(self.test_btn)
 
         self._platforms = [
             Platform(1100, 650, 128, 32, self.screen),
@@ -220,7 +218,6 @@ class GameScene(Scene, ITexture, IScroll):
         from core.models import Player
         self.PLAYER = Player.get_global(reset=True)
         self.__reset_entities()
-        self.score = 0
 
     def _render_background(self):
         # ITexture.render(self)
