@@ -59,13 +59,16 @@ class ScreenPosMixin(IMaterial):
             return info
         return None
 
+    # TODO: implement by LEFT BORDER
     @property
     def left_border_passed(self):
-        return self.rect.left <= self.screen.rect.left + self.BORDER_INACCURACY
+        # return self.rect.left <= self.screen.rect.left + self.BORDER_INACCURACY
+        return self.rect.right <= self.screen.rect.left + self.BORDER_INACCURACY
 
     @property
     def right_border_passed(self):
-        return self.rect.right >= self.screen.rect.right - self.BORDER_INACCURACY
+        # return self.rect.right >= self.screen.rect.right - self.BORDER_INACCURACY
+        return self.rect.left >= self.screen.rect.right - self.BORDER_INACCURACY
 
     @property
     def top_border_passed(self):

@@ -69,6 +69,7 @@ class Screen(SingletonMixin):
         """ Переключиться на сцену (scene) """
         self.scene = scene
 
+    @property
     def half_sizes(self):
         """ Получить половинные размеры """
         return tuple((self.width // 2, self.height // 2))

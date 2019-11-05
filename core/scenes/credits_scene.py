@@ -17,7 +17,7 @@ class CreditsScene(Scene):
         from core.modules import console
         console.log("Press Space to go next", thread=self.THREAD)
 
-        hz = self.screen.half_sizes()
+        hz = self.screen.half_sizes
 
         # >>> Init Controls
         self._credit = Label(*hz, self.screen, label_text, color=Colors.WHITE, font_size=50)

@@ -10,18 +10,21 @@ class ITexture(IMaterial, IRender):
 
         self._rel_path = texture_path
 
-        if props.get("auto_load_texture", True):
-            self._texture = self._load_texture(self.static_path)
+        if props.get("auto_load", True):
+            self.image = self._load_texture(self.static_path, **props)
 
-    def _load_texture(self, path):
+    def _load_texture(self, path, **props):
         import pygame
         texture = pygame.image.load(path)
-        texture = pygame.transform.scale(texture, (self.width, self.height))
+        if props.get("auto_convert", False):
+            texture = texture.convert()
+        if props.get("auto_scale", True):
+            texture = pygame.transform.scale(texture, (self.width, self.height))
         return texture
 
     def render(self):
-        if self._texture:
-            self.screen.surface.blit(self._texture, self.rect)
+        if self.image:
+            self.screen.surface.blit(self.image, self.rect)
 
     @property
     def static_path(self):

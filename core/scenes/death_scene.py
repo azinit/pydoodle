@@ -8,7 +8,7 @@ class DeathScene(Scene):
         from core.consts import Colors
 
         self._controls.extend([
-            Label(*self.screen.half_sizes(), screen=self.screen, text="You died. Try again?", color=Colors.RED)
+            Label(*self.screen.half_sizes, screen=self.screen, text="You died. Try again?", color=Colors.RED)
         ])
 
     def render(self):

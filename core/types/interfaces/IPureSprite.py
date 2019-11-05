@@ -4,7 +4,7 @@ from core.types.interfaces import ITexture, IStateDependent, IUpdate
 class IPureSprite(ITexture, IUpdate, IStateDependent):
 
     def __init__(self, texture_path, frames, x, y, width, height, screen, **props):
-        ITexture.__init__(self, texture_path, x, y, width, height, screen, auto_load_texture=False)
+        ITexture.__init__(self, texture_path, x, y, width, height, screen, auto_load=False)
         IStateDependent.__init__(self)
         IUpdate.__init__(self)
 
@@ -13,7 +13,7 @@ class IPureSprite(ITexture, IUpdate, IStateDependent):
         self.state.frame_val = 0
 
     def update(self, **props):
-        self._texture = self._frames[self.current_frame_num]
+        self.image = self._frames[self.current_frame_num]
         if self.is_end_of_animation:
             self.state.frame_val = 0
         else:

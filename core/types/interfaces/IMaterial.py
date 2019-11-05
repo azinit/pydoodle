@@ -14,6 +14,8 @@ class IMaterial:
     def __init__(self, x, y, width, height):
         import pygame
         self.rect = pygame.Rect((x, y, width, height))
+        # FIXME:
+        # self.image = pygame.Surface((width, height))
 
     @property
     def x(self):

@@ -12,10 +12,7 @@ class GameScene(Scene):
             ExitBlock,
             Platform
         )
-        from core.examples.scene_demo.core.types.entities import (
-            Camera,
-            complex_camera
-        )
+        from core.examples.scene_demo.core.types.entities import Camera
 
         import pygame
         from pygame import (
@@ -24,25 +21,27 @@ class GameScene(Scene):
         )
 
         super(GameScene, self).__init__()
+
+        # >>> init bg
         self.bg = Surface((32, 32))
         self.bg.convert()
         self.bg.fill(Color("#0094FF"))
         up = left = right = False
+        # >>> init entities
         self.entities = pygame.sprite.Group()
         self.player = Player(5, 40)
         self.player.scene = self
         self.platforms = []
-
         self.levelno = levelno
-
         levelinfo = levels[levelno]
         self.enemies = [Enemy(*pos) for pos in levelinfo['enemies']]
 
+        # >>> init level, sizes
         level = levelinfo['level']
         total_level_width = len(level[0]) * 32
         total_level_height = len(level) * 32
 
-        # build the level
+        # >>> build the level
         x = 0
         y = 0
         for row in level:
@@ -59,7 +58,7 @@ class GameScene(Scene):
             y += 32
             x = 0
 
-        self.camera = Camera(complex_camera, total_level_width, total_level_height)
+        self.camera = Camera(total_level_width, total_level_height)
         self.entities.add(self.player)
         for e in self.enemies:
             self.entities.add(e)
