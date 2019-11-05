@@ -8,11 +8,8 @@ class Label(Control):
     @extends Control
     """
 
-    from core.consts import Colors
-    DEFAULT_COLOR = Colors.BLACK
-
-    def __init__(self, x, y, screen, text, **props):
-        super().__init__(x, y, screen, 0, 0)
+    def __init__(self, text, x, y, screen, **props):
+        super().__init__(x, y, 0, 0, screen, **props)
         # >>> init font
         self.family = props.get("font_family", "Calibri")
         self.size = props.get("font_size", 56)
@@ -25,7 +22,6 @@ class Label(Control):
         )
         # >>> init other properties
         self.antialias = props.get("antialias", True)
-        self.color = props.get("color", self.DEFAULT_COLOR)
         self.text = text
         # >>> re-init sizes
         self.rect.width, self.rect.height = self.sizes()
@@ -42,6 +38,11 @@ class Label(Control):
             italic=props.get("italic", False),
         )
 
+    # FIXME:
+    # @property
+    # def image(self):
+    #     return self.rendered_label
+
     def sizes(self):
         return self.font.size(self.text)
 
@@ -51,11 +52,16 @@ class Label(Control):
         if new_text:
             self.text = new_text
 
-    def render(self):
-        rendered_label = self.font.render(self.text, self.antialias, self.color)
-        # >>> centering label
-        actual_sizes = rendered_label.get_size()
+    @property
+    def rendered_label(self):
+        return self.font.render(self.text, self.antialias, self.color)
+
+    @property
+    def center(self):
+        actual_sizes = self.rendered_label.get_size()
         center_x = self.x - actual_sizes[0] // 2
         center_y = self.y - actual_sizes[1] // 2
-        # >>> snap to surface
-        self.surface.blit(rendered_label, (center_x, center_y))
+        return tuple((center_x, center_y))
+
+    def render(self):
+        self.surface.blit(self.rendered_label, self.center)

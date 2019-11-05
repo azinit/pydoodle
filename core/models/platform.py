@@ -6,6 +6,7 @@ from core.types.interfaces import IGround, ITexture
 # TODO: implement on_floor
 class Platform(DynamicEntity, IGround, ITexture):
     DEFAULT_TEXTURE = "platform/base_diffuse.png"
+    DEFAULT_SIZES = (128, 32)
 
     def __init__(self, x, y, width, height, screen, initial_state=None):
         from core.consts import Colors
@@ -15,12 +16,22 @@ class Platform(DynamicEntity, IGround, ITexture):
 
         self.elasticity = 1
         self.color = Colors.D_RAVEN
+        self.state.visible = True
 
     def update(self, **props):
+        scroll_up = props.get("scroll_up")
+        if scroll_up:
+            self.rect.move_ip(0, scroll_up)
+
         self.activate_bindings()
 
     def render(self):
-        ITexture.render(self)
+        # print(self.state.visible)
+        if self.state.visible:
+            ITexture.render(self)
+        else:
+            from core.consts import Colors
+            self.screen.draw.rect(self.surface, Colors.RED, self.rect_tuple)
 
 
 class SuperPlatform(Platform):

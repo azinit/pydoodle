@@ -60,23 +60,25 @@ class ScreenPosMixin(IMaterial):
         return None
 
     # TODO: implement by LEFT BORDER
-    @property
-    def left_border_passed(self):
+    def left_border_passed(self, **props):
         # return self.rect.left <= self.screen.rect.left + self.BORDER_INACCURACY
-        return self.rect.right <= self.screen.rect.left + self.BORDER_INACCURACY
+        screen_rect = props.get("screen_rect", self.screen.rect)
+        return self.rect.right <= screen_rect.left + self.BORDER_INACCURACY
 
-    @property
-    def right_border_passed(self):
+    def right_border_passed(self, **props):
         # return self.rect.right >= self.screen.rect.right - self.BORDER_INACCURACY
-        return self.rect.left >= self.screen.rect.right - self.BORDER_INACCURACY
+        screen_rect = props.get("screen_rect", self.screen.rect)
+        return self.rect.left >= screen_rect.right - self.BORDER_INACCURACY
 
-    @property
-    def top_border_passed(self):
-        return self.rect.top <= self.screen.rect.top + self.BORDER_INACCURACY
+    def top_border_passed(self, **props):
+        screen_rect = props.get("screen_rect", self.screen.rect)
+        # return self.rect.top <= screen_rect.top + self.BORDER_INACCURACY
+        return self.rect.bottom <= screen_rect.top + self.BORDER_INACCURACY
 
-    @property
-    def bottom_border_passed(self):
-        return self.rect.bottom >= self.screen.rect.bottom - self.BORDER_INACCURACY
+    def bottom_border_passed(self, **props):
+        screen_rect = props.get("screen_rect", self.screen.rect)
+        # return self.rect.bottom >= screen_rect.bottom - self.BORDER_INACCURACY
+        return self.rect.top >= screen_rect.bottom - self.BORDER_INACCURACY
 
     def drop_left(self):
         self.rect.x = 0

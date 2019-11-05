@@ -21,7 +21,7 @@ class Player(DynamicEntity, MoveMixin, GravityMixin, SingletonMixin, ISequenceSp
     """
 
     DEFAULT_PROPS = {
-        "x": 50,
+        "x": 400,
         "y": 100,
         "width": 64,
         "height": 64,
@@ -40,17 +40,32 @@ class Player(DynamicEntity, MoveMixin, GravityMixin, SingletonMixin, ISequenceSp
         ISequenceSprite.__init__(self, self.DEFAULT_SPRITE, animation_data, *self.rect_tuple, screen,
                                  fr_amount=2, fr_iter=8)
 
+        # TODO: For tests
+        from core.controls import Label
+        from core.consts import Colors
+        self.label = Label(str(self.pos), *self.rect.center, self.screen, font_size=20, color=Colors.WHITE, bold=True)
+
     def update(self, **props):
         from pygame import (K_a, K_d)
         keys = props.get("keys")
 
         ISequenceSprite.update(self, **props)
-        GravityMixin.update(self, **props)
+        GravityMixin.update(self, default_all=False, **props)
         MoveMixin.update(self, **props)
-        if keys[K_a] and self.left_border_passed:
+        if keys[K_a] and self.left_border_passed():
             self.drop_right()
-        if keys[K_d] and self.right_border_passed:
+        if keys[K_d] and self.right_border_passed():
             self.drop_left()
+
+        self.label.text = str(self.pos)
+        self.label.rect.x = self.rect.centerx
+        self.label.rect.y = self.rect.centery + self.rect.height // 1.5
+
+        # self.add_image(
+        #     image=self.label.rendered_label,
+        #     pos=self.label.center,
+        # )
+        # self.image.blit(self.label.rendered_label, self.label.center)
 
         # Not need?
         # if self.state.is_jumping:
@@ -74,7 +89,8 @@ class Player(DynamicEntity, MoveMixin, GravityMixin, SingletonMixin, ISequenceSp
 
         # self.screen.draw.rect(self.surface, color, self.rect)
         ISequenceSprite.render(self)
-
+        self.label.render()
+        # self.label.render()
 
 # TODO StateSequenceSprite
 

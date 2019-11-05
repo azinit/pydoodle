@@ -54,3 +54,7 @@ class Scene(IRender, IUpdate, IHandleEvents):
         """ Отображение всех контролов на сцене """
         for _control in self._controls:
             _control.render()
+
+    def _update__controls(self):
+        for _control in self._controls:
+            _control.update()

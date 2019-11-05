@@ -15,7 +15,11 @@ class IMaterial:
         import pygame
         self.rect = pygame.Rect((x, y, width, height))
         # FIXME:
-        # self.image = pygame.Surface((width, height))
+        self.image = pygame.Surface((width, height))
+
+    # FIXME:
+    # def add_image(self, image, pos):
+    #     self.image.blit(image, pos)
 
     @property
     def x(self):
@@ -74,7 +78,7 @@ class IMaterial:
     #
     #     return None
 
-    def collide(self, another):
+    def collide(self, another, **props):
         """
         Сначала - проверяем коллизию снизу (для блокировки)
         Затем, по бокам (для столкновения)
@@ -98,16 +102,17 @@ class IMaterial:
         if not self.is_collide_with(another):
             return None
 
-        if self.is_collide_by_bottom(another):
-            self.rect.top = another.rect.bottom
-            return Direction.BOTTOM
+        if props.get("default_all", True):
+            if self.is_collide_by_bottom(another):
+                self.rect.top = another.rect.bottom
+                return Direction.BOTTOM
 
-        if self.is_collide_by_left(another):
-            self.rect.right = another.rect.left
-            return Direction.LEFT
-        if self.is_collide_by_right(another):
-            self.rect.left = another.rect.right
-            return Direction.RIGHT
+            if self.is_collide_by_left(another):
+                self.rect.right = another.rect.left
+                return Direction.LEFT
+            if self.is_collide_by_right(another):
+                self.rect.left = another.rect.right
+                return Direction.RIGHT
 
         if self.is_collide_by_top(another):
             self.rect.bottom = another.rect.top

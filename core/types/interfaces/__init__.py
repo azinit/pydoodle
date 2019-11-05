@@ -15,4 +15,8 @@ from .IPlay import IPlay
 from .IStop import IStop
 from .IPause import IPause
 from .IPulse import IPulse
-
+from .IHover import IHover
+from .IColor import IColor
+from .IClick import IClick
+from .IScroll import IScroll
+from .IGenerate import IGenerate

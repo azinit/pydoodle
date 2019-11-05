@@ -22,6 +22,8 @@ class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent, IJump, IFall):
     JUMP_POTENTIAL_VELOCITY = ISpeed.DEFAULT_SPEED * 2
     GRAVITY_ACCELERATION = 0.5
 
+
+
     def __init__(self, x, y, width, height, **props):
         IMaterial.__init__(self, x, y, width, height)
         ISpeed.__init__(self, **props)
@@ -40,16 +42,19 @@ class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent, IJump, IFall):
     def update(self, **props):
         from pygame import K_SPACE
         from core.consts import Direction
+        from core.types.entities import Sound
+
+        kick_sound = Sound("kick_stone.wav")
         keys = props.get("keys")
         grounds = props.get("grounds", [])
+        scroll_up = props.get("scroll_up", lambda: None)
 
         # # >>> set state
         # TODO: To Player logic?
         for potential_ground in grounds:
-            direction = self.collide(potential_ground)
+            direction = self.collide(potential_ground, default_all=props.get("default_all"))
             if direction and direction == Direction.TOP:
-                from core.types.entities import Sound
-                Sound("kick_stone.wav").play()
+                kick_sound.play()
                 if self.state.is_bouncing:
                     self.state.is_jumping = True
                     self.state.is_falling = False
@@ -59,7 +64,8 @@ class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent, IJump, IFall):
                     self.land(potential_ground)
 
                 potential_ground.state.on_landed = True
-
+                # scroll up
+                scroll_up(ground=potential_ground)
                 break
         else:
             self.state.is_falling = True

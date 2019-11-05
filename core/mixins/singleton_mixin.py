@@ -4,6 +4,8 @@
 # https://www.programiz.com/python-programming/methods/built-in/globals
 # https://thepythonguru.com/python-builtin-functions/globals/
 
+# FIXME: Implement better
+
 
 class SingletonMixin(object):
     """
@@ -27,13 +29,9 @@ class SingletonMixin(object):
     #     pass
 
     @classmethod
-    def get_global(cls):
+    def get_global(cls, **props):
         # >>> if not exist -> create new global instance
-        if cls.__GLOBAL_INSTANCE is None:
+        if cls.__GLOBAL_INSTANCE is None or props.get("reset", False):
             cls.__GLOBAL_INSTANCE = cls(**cls.DEFAULT_PROPS)
 
         return cls.__GLOBAL_INSTANCE
-
-    @classmethod
-    def _reset(cls):
-        cls.__GLOBAL_INSTANCE = cls(**cls.DEFAULT_PROPS)

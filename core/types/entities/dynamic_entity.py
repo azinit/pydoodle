@@ -18,7 +18,7 @@ class DynamicEntity(Entity, ScreenPosMixin):
         Entity.__init__(self, x, y, width, height, screen, initial_state=initial_state)
         ScreenPosMixin.__init__(self, x, y, width, height, screen)
         # print(">>>", self.BORDER_INACCURACY)
-        # print(">>>", self.bottom_border_passed)
+        # print(">>>", self.bottom_border_passed())
         # print(">>>", self._position_info)
 
     # @abstractmethod

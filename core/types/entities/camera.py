@@ -1,5 +1,6 @@
 from pygame import Rect
 
+# TODO: Implement IUpdate, IRender
 
 class Camera(object):
     def __init__(self, width, height, screen):
@@ -33,3 +34,13 @@ class Camera(object):
         t = max(-(self.state.height - WIN_HEIGHT), t)  # stop scrolling bottom
 
         return Rect(l, t, w, h)
+
+    def render(self):
+        import pygame
+        from core.consts import Colors
+        left = self.state.bottomleft
+        right = self.state.bottomright
+        # print(left, right)
+
+        pygame.draw.line(self.screen.surface, Colors.CYAN, left, right)
+        # pygame.draw.line(self.screen.surface, Colors.GREEN, self.state.bottomleft, self.state.bottomright)

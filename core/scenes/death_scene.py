@@ -7,17 +7,20 @@ class DeathScene(Scene):
         from core.controls import Label
         from core.consts import Colors
 
+        # from core.scenes.scenes import new_game
+        # from core.scenes import GameScene
+        # self.next_scene = GameScene(caption="Game | PyDoodle")
         self._controls.extend([
-            Label(*self.screen.half_sizes, screen=self.screen, text="You died. Try again?", color=Colors.RED)
+            Label("Try again?", *self.screen.half_sizes, screen=self.screen, color=Colors.CYAN)
         ])
 
     def render(self):
-        self._render()
+        self._render_background()
         self._render__controls()
+
+    def _render_background(self):
+        from core.consts import Colors
+        self.surface.fill(Colors.BLACK)
 
     def update(self, **props):
         pass
-
-    def _render(self):
-        from core.consts import Colors
-        self.surface.fill(Colors.BLACK)
