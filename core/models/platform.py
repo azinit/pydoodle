@@ -41,7 +41,7 @@ class SuperPlatform(Platform):
         super().__init__(x, y, width, height, screen)
         from core.consts import Colors
         self.color = Colors.GRAY
-        self.elasticity = 1.5
+        self.elasticity = 1.4
 
 
 """ 

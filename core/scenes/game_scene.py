@@ -1,10 +1,10 @@
 from core.types.entities import Scene
-from core.types.interfaces import ITexture, IScroll
+from core.types.interfaces import ITexture, IScroll, IPause
 
 
 # TODO: Level ...
 
-class GameScene(Scene, ITexture, IScroll):
+class GameScene(Scene, ITexture, IScroll, IPause):
     """
     Игровая сцена
     @remark
@@ -15,10 +15,10 @@ class GameScene(Scene, ITexture, IScroll):
     """
     THREAD = "GAME_SCENE"
 
-    DEFAULT_TEXTURE = "game_scene/blue_2x_diffuse.png"
+    DEFAULT_TEXTURE = "game_scene/dark_lighted_diffuse.jpg"
     from core.models import Player
     PLAYER = Player.get_global()
-    FOOTER_MIN = 100
+    FOOTER_MIN = 32
     BEST_SCORE = 0
     on_best_score = lambda **props: None
 
@@ -27,16 +27,29 @@ class GameScene(Scene, ITexture, IScroll):
         ITexture.__init__(self, self.DEFAULT_TEXTURE, *self.screen.rect_tuple, self.screen,
                           auto_scale=False, auto_convert=True)
         IScroll.__init__(self)
+        IPause.__init__(self)
 
-        from core.controls import Label
+        from core.controls import Label, Button
         from core.consts import Colors
 
         self.__reset_entities()
+        self._pause_label = Label("Пауза", *self.screen.half_sizes, self.screen, color=Colors.YELLOW, font_size=32, bold=True)
+        self._pause_label.state.visible = False
+
+        self.buttons = [
+            Button(self.__reset, self.screen.width - 32, self.height - 32, 48, 48, self.screen,
+                   color=Colors.D_JET, text="RETRY", font_size=12, font_color=Colors.GRAY),
+            Button(self.__to_menu, self.screen.width - 88, self.height - 32, 48, 48, self.screen,
+                   color=Colors.D_JET, text="MENU", font_size=12, font_color=Colors.GRAY),
+        ]
+
         self._controls.extend([
-            Label("BEST SCORE:", 100, 32, self.screen, color=Colors.WHITE, font_size=24),
-            Label("ACTUAL SCORE:", 100, 64, self.screen, color=Colors.WHITE, font_size=24),
-            Label("0", 200, 32, self.screen, color=Colors.GREEN, font_size=24),
-            Label("0", 200, 64, self.screen, color=Colors.YELLOW, font_size=24),
+            Label("BEST SCORE:", 100, self.height - 32, self.screen, color=Colors.WHITE, font_size=24),
+            Label("ACTUAL SCORE:", 100, self.height - 64, self.screen, color=Colors.WHITE, font_size=24),
+            Label("0", 200, self.height - 32, self.screen, color=Colors.GREEN, font_size=24),
+            Label("0", 200, self.height - 64, self.screen, color=Colors.YELLOW, font_size=24),
+            self._pause_label,
+            *self.buttons,
         ])
 
     def __reset_entities(self):
@@ -68,9 +81,8 @@ class GameScene(Scene, ITexture, IScroll):
         ]
 
         # TODO: Property?
-        music = Music("bg_winter.mp3")
-        music.set_volume(0.2)
-        # music.play()
+        self.music = Music("cyber.mp3")
+        self.music.set_volume(0.1)
 
     """
     ..............................................................................................................
@@ -79,6 +91,9 @@ class GameScene(Scene, ITexture, IScroll):
     """
 
     def update(self, **props):
+        if not self.music.is_playing:
+            self.music.play()
+
         if self.is_player_died:
             self.on_player_died()
             return
@@ -138,6 +153,8 @@ class GameScene(Scene, ITexture, IScroll):
         # FIXME: HARDCODE
         self._controls[2].update(text=str(self.BEST_SCORE))
         self._controls[3].update(text=str(self.score))
+        for b in self.buttons:
+            b.update()
 
     """
     ..............................................................................................................
@@ -148,12 +165,38 @@ class GameScene(Scene, ITexture, IScroll):
     def handle_events(self, events):
         from pygame import (
             KEYDOWN,
-            K_z
+            K_z,
+            K_ESCAPE
         )
 
         for e in events:
-            if e.type == KEYDOWN and e.key == K_z:
-                self.__reset()
+            if e.type == KEYDOWN:
+                if e.key == K_z:
+                    self.__reset()
+                if e.key == K_ESCAPE:
+                    self.state.on_pause = True
+
+    """
+    @event on_pause
+    """
+
+    def on_pause(self):
+        import pygame
+        # from core.consts import Colors
+        # font = pygame.font.SysFont("Calibri", 32)
+        # text = font.render("PAUSE", True, Colors.GREEN)
+        # self.surface.blit(text, 500, 500)
+        self._pause_label.state.visible = True
+        while True:
+            # >>> handle events
+            for e in pygame.event.get():
+                if e.type == pygame.KEYDOWN and e.key == pygame.K_ESCAPE:
+                    self.state.on_pause = False
+                    self._pause_label.state.visible = False
+                    return
+            # >>> render
+            self._pause_label.render()
+            pygame.display.update()
 
     """
     @event on_scroll_up
@@ -214,17 +257,28 @@ class GameScene(Scene, ITexture, IScroll):
         self._render__controls()
         self.PLAYER.render()
 
-    def __reset(self):
-        from core.models import Player
-        self.PLAYER = Player.get_global(reset=True)
-        self.__reset_entities()
-
     def _render_background(self):
-        # ITexture.render(self)
-        from core.consts import Colors
-        self.surface.fill(Colors.DARK)
+        ITexture.render(self)
+        # from core.consts import Colors
+        # self.surface.fill(Colors.DARK)
         # self.screen.draw.rect(self.surface, Colors.GRAY, (0, self.__scroll_border, self.screen.width, self.FOOTER_MIN))
 
     def _render_entities(self):
         for entity in [*self._platforms, *self._effects]:
             entity.render()
+
+    """
+    ..............................................................................................................
+    ................................................ SCENE .......................................................
+    ..............................................................................................................
+    """
+
+    def __reset(self):
+        from core.models import Player
+        self.PLAYER = Player.get_global(reset=True)
+        self.__reset_entities()
+
+    def __to_menu(self):
+        from core.scenes import scenes
+        self.__reset()
+        self.screen.switch_to(scenes.menu_scene)

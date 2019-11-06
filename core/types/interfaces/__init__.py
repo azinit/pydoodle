@@ -20,3 +20,4 @@ from .IColor import IColor
 from .IClick import IClick
 from .IScroll import IScroll
 from .IGenerate import IGenerate
+from .IFocus import IFocus

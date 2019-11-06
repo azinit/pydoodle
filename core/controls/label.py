@@ -59,4 +59,5 @@ class Label(Control):
         return tuple((center_x, center_y))
 
     def render(self):
-        self.surface.blit(self.rendered_label, self.center)
+        if self.state.visible:
+            self.surface.blit(self.rendered_label, self.center)

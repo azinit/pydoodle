@@ -12,7 +12,7 @@ class CHUNK_STATE:
         if state == CHUNK_STATE.PASSIVE:
             return Colors.GRAY
         if state == CHUNK_STATE.ACTIVE:
-            return Colors.SOFT_CYAN
+            return Colors.CYAN_PRIMARY
 
 
 class ProgressChunk(Control):

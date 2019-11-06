@@ -1,8 +1,8 @@
 from core.types.entities import Entity
-from core.types.interfaces import IHover, IColor, IClick
+from core.types.interfaces import IHover, IColor, IClick, IFocus
 
 
-class Control(Entity, IHover, IColor, IClick):
+class Control(Entity, IHover, IColor, IClick, IFocus):
     """
     Абстрактный класс для контролов
     @class Control
@@ -16,7 +16,9 @@ class Control(Entity, IHover, IColor, IClick):
         Entity.__init__(self, x, y, width, height, screen)
         IHover.__init__(self)
         IClick.__init__(self)
+        IFocus.__init__(self)
         IColor.__init__(self, props.get("color", self.DEFAULT_COLOR))
+        self.state.visible = True
 
     def update(self, **props):
         import pygame
@@ -46,6 +48,16 @@ class Control(Entity, IHover, IColor, IClick):
                 self.state.on_click = False
                 self.color = self.state.before_click
 
+        # >>> is focused?
+        if left_click:
+            if self.rect.collidepoint(mouse_pos):
+                self.state.on_focus = True
+                self.state.before_focus = self.color
+            else:
+                if self.state.on_focus:
+                    self.state.on_focus = False
+                    self.color = self.state.before_focus
+
         self.activate_bindings()
 
     def render(self):
@@ -59,3 +71,7 @@ class Control(Entity, IHover, IColor, IClick):
     def on_click(self):
         from core.consts import Colors
         self.color = Colors.darken(self.state.before_click, 16)
+
+    def on_focus(self):
+        from core.consts import Colors
+        self.color = Colors.RED

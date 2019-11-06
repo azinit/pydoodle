@@ -43,8 +43,8 @@ class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent, IJump, IFall):
         from pygame import K_SPACE
         from core.consts import Direction
         from core.types.entities import Sound
+        from core.sounds import kick_stone
 
-        kick_sound = Sound("kick_stone.wav")
         keys = props.get("keys")
         grounds = props.get("grounds", [])
         scroll_up = props.get("scroll_up", lambda: None)
@@ -54,7 +54,7 @@ class GravityMixin(IMaterial, ISpeed, IUpdate, IStateDependent, IJump, IFall):
         for potential_ground in grounds:
             direction = self.collide(potential_ground, default_all=props.get("default_all"))
             if direction and direction == Direction.TOP:
-                kick_sound.play()
+                kick_stone.play()
                 if self.state.is_bouncing:
                     self.state.is_jumping = True
                     self.state.is_falling = False

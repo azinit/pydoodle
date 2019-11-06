@@ -56,10 +56,7 @@ class RecursiveBar(ProgressBar):
 
     # FIXME: DRY
     def next(self):
-        from core.modules import console
-
         if self.current_value == self.total_value * 2 - 1:
-            console.log("RESET BAR", thread=self.THREAD_NAME)
             self.current_value = 0
         else:
             self.current_value += 1

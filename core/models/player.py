@@ -16,7 +16,6 @@ class Player(DynamicEntity, MoveMixin, GravityMixin, SingletonMixin, ISequenceSp
     @mixin MoveMixin
     @mixin JumpMixin
     @mixin SingletonMixin
-    @todo Один игрок для меню и игры?
     @todo Добавить анимацию для падения и полета
     """
 
@@ -29,7 +28,9 @@ class Player(DynamicEntity, MoveMixin, GravityMixin, SingletonMixin, ISequenceSp
     }
 
     DEFAULT_TEXTURE = "doodle/base_diffuse.png"
-    DEFAULT_SPRITE = "doodle/seq-sprite_{i}.png"
+    DEFAULT_SPRITE_L = "doodle/seq-sprite_l_{i}.png"
+    DEFAULT_SPRITE_R = "doodle/seq-sprite_r_{i}.png"
+    DEFAULT_SPRITE = DEFAULT_SPRITE_L
 
     def __init__(self, x, y, width, height, screen, dx=None, dy=None):
         DynamicEntity.__init__(self, x, y, width, height, screen)
@@ -48,30 +49,32 @@ class Player(DynamicEntity, MoveMixin, GravityMixin, SingletonMixin, ISequenceSp
     def update(self, **props):
         from pygame import (K_a, K_d)
         keys = props.get("keys")
-
+        # >>> update model by mixins
         ISequenceSprite.update(self, **props)
         GravityMixin.update(self, default_all=False, **props)
         MoveMixin.update(self, **props)
+
+        # >>> custom update (drop left/right)
         if keys[K_a] and self.left_border_passed():
             self.drop_right()
         if keys[K_d] and self.right_border_passed():
             self.drop_left()
 
+        # >>> init sprite oriented
+        from core.consts import Direction
+        # FIXME: optimize?
+        last_oriented_left = self._frame_pattern == self.DEFAULT_SPRITE_L
+        if self.state.oriented == Direction.LEFT and not last_oriented_left:
+            self._frame_pattern = self.DEFAULT_SPRITE_L
+            self.load_frames()
+        if self.state.oriented == Direction.RIGHT and last_oriented_left:
+            self._frame_pattern = self.DEFAULT_SPRITE_R
+            self.load_frames()
+
+        # >>> init label text
         self.label.text = str(self.pos)
         self.label.rect.x = self.rect.centerx
         self.label.rect.y = self.rect.centery + self.rect.height // 1.5
-
-        # self.add_image(
-        #     image=self.label.rendered_label,
-        #     pos=self.label.center,
-        # )
-        # self.image.blit(self.label.rendered_label, self.label.center)
-
-        # Not need?
-        # if self.state.is_jumping:
-        #     self.state.oriented = Direction.TOP
-        # if self.state.is_falling:
-        #     self.state.oriented = Direction.BOTTOM
 
     def render(self):
         from core.consts import Colors
@@ -89,43 +92,41 @@ class Player(DynamicEntity, MoveMixin, GravityMixin, SingletonMixin, ISequenceSp
 
         # self.screen.draw.rect(self.surface, color, self.rect)
         ISequenceSprite.render(self)
-        self.label.render()
         # self.label.render()
 
 # TODO StateSequenceSprite
-
-data = [
-    # if in <state> => load sprites_pack
-    {
-        "property": "oriented",
-        "value": "Direction.LEFT",
-        "frame": {
-            "amount": 4,
-            "pattern": "doodle/test-sprite_left_{i}.png"
-        }
-    },
-    {
-        "property": "oriented",
-        "value": "Direction.RIGHT",
-        "frame": {
-            "amount": 4,
-            "pattern": "doodle/test-sprite_right_{i}.png"
-        }
-    },
-    {
-        "property": "oriented",
-        "value": "Direction.NORMAL",
-        "frame": {
-            "amount": 2,
-            "pattern": "doodle/test-sprite_normal_{i}.png"
-        }
-    },
-    {
-        "property": "is_fly",
-        "value": True,
-        "frame": {
-            "amount": 2,
-            "pattern": "doodle/test-sprite_fly_{i}.png"
-        }
-    }
-]
+# data = [
+#     # if in <state> => load sprites_pack
+#     {
+#         "property": "oriented",
+#         "value": "Direction.LEFT",
+#         "frame": {
+#             "amount": 4,
+#             "pattern": "doodle/test-sprite_left_{i}.png"
+#         }
+#     },
+#     {
+#         "property": "oriented",
+#         "value": "Direction.RIGHT",
+#         "frame": {
+#             "amount": 4,
+#             "pattern": "doodle/test-sprite_right_{i}.png"
+#         }
+#     },
+#     {
+#         "property": "oriented",
+#         "value": "Direction.NORMAL",
+#         "frame": {
+#             "amount": 2,
+#             "pattern": "doodle/test-sprite_normal_{i}.png"
+#         }
+#     },
+#     {
+#         "property": "is_fly",
+#         "value": True,
+#         "frame": {
+#             "amount": 2,
+#             "pattern": "doodle/test-sprite_fly_{i}.png"
+#         }
+#     }
+# ]

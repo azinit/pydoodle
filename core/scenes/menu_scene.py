@@ -9,21 +9,25 @@ class MenuScene(Scene, ITexture):
     @extends Scene
     """
 
-    DEFAULT_BACKGROUND = "backgrounds/main_menu.jpg"
+    DEFAULT_BACKGROUND = "backgrounds/main_menu_blue.jpg"
 
     def __init__(self, caption=None):
         Scene.__init__(self, caption=caption)
         ITexture.__init__(self, self.DEFAULT_BACKGROUND, *self.screen.rect_tuple, self.screen)
-        from core.controls import Button, RecursiveBar, Label
+        from core.controls import Button, RecursiveBar, Label, Input
         from core.consts import Colors
 
+        self.input = Input(100, 100, 128, 64, self.screen, font_size=24)
         self._controls.extend([
             Button(self.on_play, *self.screen.half_sizes, 256, 48, self.screen,
-                   color=Colors.DARK, text="Play", font_size=32, font_color=Colors.WHITE),
+                   color=Colors.lighten(Colors.DARK, 5), text="Play", font_size=32, font_color=Colors.CYAN_PRIMARY),
             RecursiveBar(0, self.screen.height - 8, 16, self.screen,
                          total_value=48, current_value=0, chunks_width=128, chunks_gap=8),
-            Label("Hello, ", 48, self.screen.height - 32, self.screen, color=Colors.WHITE, font_size=24),
-            Label("Ilya", 96, self.screen.height - 32, self.screen, color=Colors.CYAN, font_size=24),
+            Label("Hello, ", self.screen.width // 2 - 32, self.screen.height - 32, self.screen,
+                  color=Colors.WHITE, font_size=24),
+            Label("Player", self.screen.width // 2 + 32, self.screen.height - 32, self.screen,
+                  color=Colors.CYAN_PRIMARY, font_size=24, bold=True),
+            # self.input,
         ])
 
     """
@@ -46,6 +50,7 @@ class MenuScene(Scene, ITexture):
     """
 
     def handle_events(self, events):
+        # self.input.handle_events(events=events)
         pass
 
     def on_play(self):

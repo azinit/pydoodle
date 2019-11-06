@@ -50,6 +50,8 @@ class Button(Control):
     def render(self, outline=None):
         if outline:
             self.screen.draw.rect(self.surface, outline, (self.x - 2, self.y - 2, self.width + 4, self.height + 4), 0)
-
         self.screen.draw.rect(self.surface, self.color, self.rect_tuple, 0)
         self.label.render()
+
+    def on_focus(self):
+        pass

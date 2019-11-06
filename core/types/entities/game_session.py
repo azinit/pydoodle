@@ -16,7 +16,6 @@ class GameSession(object):
     Сцены, в свою очередь, делегируют эти процессы на модели, контролы
     """
 
-    from core.modules import UserInitializer
     from core.types.entities import Screen
     THREAD = "GAME"
     FPS_LIMIT = 60
