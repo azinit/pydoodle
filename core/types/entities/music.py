@@ -18,17 +18,23 @@ class Music(IPlay, IPause, IStop):
         self.__mixer = pygame.mixer
         self.__music = pygame.mixer.music.load(self.path)
         self.is_playing = False
+        self.__on_paused = False
 
     def play(self, **props):
         self.is_playing = True
-        self.__mixer.music.play(-1)
+        if self.__on_paused:
+            self.__on_paused = False
+            self.__mixer.music.unpause()
+        else:
+            self.__mixer.music.play(-1)
 
     def set_volume(self, value: float):
         self.__mixer.music.set_volume(value)
 
     def pause(self):
         self.is_playing = False
-        pass
+        self.__on_paused = True
+        self.__mixer.music.pause()
 
     def stop(self):
         self.is_playing = False

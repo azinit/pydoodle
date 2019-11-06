@@ -18,7 +18,7 @@ class GameScene(Scene, ITexture, IScroll, IPause):
     DEFAULT_TEXTURE = "game_scene/dark_lighted_diffuse.jpg"
     from core.models import Player
     PLAYER = Player.get_global()
-    FOOTER_MIN = 32
+    FOOTER_MIN = 100
     BEST_SCORE = 0
     on_best_score = lambda **props: None
 
@@ -33,7 +33,8 @@ class GameScene(Scene, ITexture, IScroll, IPause):
         from core.consts import Colors
 
         self.__reset_entities()
-        self._pause_label = Label("Пауза", *self.screen.half_sizes, self.screen, color=Colors.YELLOW, font_size=32, bold=True)
+        self._pause_label = Label("Пауза", *self.screen.half_sizes, self.screen, color=Colors.YELLOW, font_size=32,
+                                  bold=True)
         self._pause_label.state.visible = False
 
         self.buttons = [
@@ -41,6 +42,8 @@ class GameScene(Scene, ITexture, IScroll, IPause):
                    color=Colors.D_JET, text="RETRY", font_size=12, font_color=Colors.GRAY),
             Button(self.__to_menu, self.screen.width - 88, self.height - 32, 48, 48, self.screen,
                    color=Colors.D_JET, text="MENU", font_size=12, font_color=Colors.GRAY),
+            Button(self.__switch_music, self.screen.width - 144, self.height - 32, 48, 48, self.screen,
+                   color=Colors.D_JET, text="MUSIC", font_size=12, font_color=Colors.GRAY),
         ]
 
         self._controls.extend([
@@ -57,9 +60,6 @@ class GameScene(Scene, ITexture, IScroll, IPause):
         from core.types.entities import Music
 
         self.score = 0
-
-        # self.test_btn = Button(None, 100, 100, 128, 32, self.screen, text="Click me", font_size=16)
-        # print(self.test_btn)
 
         self._platforms = [
             Platform(1100, 650, 128, 32, self.screen),
@@ -79,8 +79,8 @@ class GameScene(Scene, ITexture, IScroll, IPause):
             # JetPack(200, 450, 32, 32, self.screen),
             # ScoreBoost(1000, 600, 32, 32, self.screen),
         ]
+        self.__last_ground = None
 
-        # TODO: Property?
         self.music = Music("cyber.mp3")
         self.music.set_volume(0.1)
 
@@ -115,9 +115,13 @@ class GameScene(Scene, ITexture, IScroll, IPause):
         import random
         from core.models import Platform, SuperPlatform
         DEF_WIDTH, DEF_HEIGHT = Platform.DEFAULT_SIZES
-        POS_Y_MAX = DEF_HEIGHT * 2
+        POS_Y_MAX = DEF_HEIGHT // 3
         POS_X_MAX = self.screen.width - DEF_WIDTH
-
+        DISTANCE_TO_PLAYER = self.PLAYER.y
+        IS_EXCEPTION_POS = self.__last_ground.y >= self.__scroll_border - 10
+        MIN_Y_INCREASE = DISTANCE_TO_PLAYER if IS_EXCEPTION_POS else 0
+        MIN_AMOUNT = 10 if IS_EXCEPTION_POS else 5
+        AMOUNT_INTERVAL = 4
         # >>> remove invisible (passed bottom)
         for i, _p in enumerate(self._platforms):
             if _p.bottom_border_passed():
@@ -126,28 +130,48 @@ class GameScene(Scene, ITexture, IScroll, IPause):
         # TODO: @generator
         # TODO: class Generator or PlatformBased
         # >>> generate new
-        amount = random.randint(1, 3)
+        amount = random.randint(MIN_AMOUNT, MIN_AMOUNT + AMOUNT_INTERVAL)
+        grid_x = list(range(amount))
+        grid_y = list(range(amount)) * 2
+        print(grid_x, grid_y)
         std_share = 1 / amount
         cur_share = 0
         for _ in range(amount):
-            # is_super = (random.randint(0, 10) == 0)
-            is_super = True
-
+            is_super = (random.randint(0, 3) == 0)
+            # is_super = True
             RandomPlatform = SuperPlatform if is_super else Platform
 
-            pos_x = random.randint(
-                int(POS_X_MAX * cur_share),
-                int(POS_X_MAX * (cur_share + std_share)),
-            )
-            pos_y = -DEF_HEIGHT - random.randint(
-                int(POS_Y_MAX * cur_share),
-                int(POS_Y_MAX * (cur_share + std_share)),
-            )
+            cell_x = random.choice(grid_x)
+            grid_x.remove(cell_x)
+            if IS_EXCEPTION_POS:
+                cell_y = 0
+                IS_EXCEPTION_POS = False
+            else:
+                cell_y = random.choice(grid_y)
+
+            grid_y.remove(cell_y)
+
+            cell_left = int((cell_x / amount) * POS_X_MAX)
+            cell_right = int((cell_x + 1 / amount) * POS_X_MAX)
+
+            cell_top = int((cell_y / amount) * POS_Y_MAX)
+            cell_bottom = int((cell_y + 1 / amount) * POS_Y_MAX)
+
+            pos_x = random.randint(cell_left, cell_right)
+            pos_y = -random.randint(cell_top, cell_bottom) + MIN_Y_INCREASE
+
+            # pos_x = random.randint(
+            #     int(POS_X_MAX * cur_share),
+            #     int(POS_X_MAX * (cur_share + std_share)),
+            # )
+            # pos_y = -DEF_HEIGHT - random.randint(
+            #     int(POS_Y_MAX * cur_share),
+            #     int(POS_Y_MAX * (cur_share + std_share)),
+            # )
 
             p = RandomPlatform(pos_x, pos_y, DEF_WIDTH, DEF_HEIGHT, self.screen)
             self._platforms.append(p)
             cur_share += std_share
-        # self._platforms
 
     def _update__controls(self):
         # FIXME: HARDCODE
@@ -205,12 +229,15 @@ class GameScene(Scene, ITexture, IScroll, IPause):
     def scroll_up(self, **props):
         ground = props.get("ground")
         if ground:
-            value = self.__scroll_border - ground.rect.bottom
-            self.state.on_scroll_up = True
-            self.state.scroll_val = value
+            NEW_PLATFORM_LANDED = ground != self.__last_ground
+            if NEW_PLATFORM_LANDED:
+                self.__last_ground = ground
+                value = self.__scroll_border - ground.rect.bottom
+                self.state.on_scroll_up = True
+                self.state.scroll_val = value
 
-            self.score += 1
-            self.__process_platforms()
+                self.score += 1
+                self.__process_platforms()
 
     def on_scroll_up(self, **props):
         for p in self._platforms:
@@ -282,3 +309,10 @@ class GameScene(Scene, ITexture, IScroll, IPause):
         from core.scenes import scenes
         self.__reset()
         self.screen.switch_to(scenes.menu_scene)
+
+    def __switch_music(self):
+        # TODO: implement
+        if self.music.is_playing:
+            self.music.pause()
+        else:
+            self.music.play()
